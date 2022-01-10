@@ -2,63 +2,57 @@
 #include <string>
 #include <queue>
 #include <map>
+#include <iostream>
 #include "enums.h"
 
 namespace LAB3 {
 
-	template <typename TypeList>
+	template <class TypeArray, class TypeHash>
 	class Interface
 	{
 	/// <summary>
 	/// Базовый класс интерфейса
 	/// </summary>
-	/// <typeparam name="TypeList">Тип "MyList"</typeparam>
+	/// <typeparam name="TypeElem">Тип "myType"</typeparam>
 	private:
-		std::ostream& out			{ std::cout };								// буфер вывода
-		int maxTableWidth			{ 90 };										// ширина выводимой строки
-		int maxTableColumns			{ 5 };										// количество колонов при выводе списка
-		std::queue <std::string> bufferForStatusBar	{};							// очередь для статус бара
+		std::ostream& out				{ std::cout };								// буфер вывода
+		int maxTableWidth				{ 110 };									// ширина выводимой строки
+		int maxTableColumnsInArray		{ 5 };										// количество колонов при выводе массива
+		std::queue <std::string> bufferForStatusBar	{};								// очередь для статус бара
 
-		const std::map <LAB2::SortingStatus, std::string> mapActiveStatus	{
-			///
-			/// Преобразует enum class SortingStatus в человекочитабельный вид
-			///
-			{ LAB2::SortingStatus::SortedAscending,     "По возрастанию" },
-			{ LAB2::SortingStatus::SortedDescending,    "По убыванию" },
-			{ LAB2::SortingStatus::ShuffleSorted,       "Перемешан" },
-			{ LAB2::SortingStatus::RandomSorted,        "Случайно" },
-			{ LAB2::SortingStatus::NotStatus,           "Не сортирован" } 
-		};
-
-		Interface() = delete;													// запрещаем создавать пустой класс
+		Interface() = delete;														// запрещаем создавать пустой класс
 
 	protected:
 
 
-		TypeList lst;
-		bool flagClearArray{ true };
-		SortingStatus activeStatus	{ SortingStatus::NotStatus };
+		TypeArray myTypeArray;
+		TypeHash myTypeHashTable;
+
+		bool flagClearArrayAndHash{ true };
 
 
 	public:
 
 
-		Interface(TypeList& lst) :	lst(lst) {}
-		Interface(TypeList&& lst) : lst(lst) {}
+		Interface(TypeArray& myTypeArray, TypeHash& myTypeHashTable)
+		: myTypeArray(myTypeArray)
+		, myTypeHashTable(myTypeHashTable)  {}
+
+		Interface(TypeArray&& myTypeArray, TypeHash&& myTypeHashTable)
+		: myTypeArray(myTypeArray)
+		, myTypeHashTable(myTypeHashTable) {}
 
 		/// <summary>
 		/// Геттеры некоторых полей
 		/// </summary>
-		auto getMaxTableWidth()		const				{	return maxTableWidth;		}
-		auto getMaxTableColumns()	const				{	return maxTableColumns;		}
-		bool getFlagClearArray()	const				{	return flagClearArray;		}
-		auto getActiveStatus()		const				{	return activeStatus;		}
+		auto getMaxTableWidth()			const				{	return maxTableWidth;			}
+		auto getMaxTableColumns()		const				{	return maxTableColumnsInArray;	}
+		bool getFlagClearArrayAndHash()	const				{	return flagClearArrayAndHash;	}
 
 		/// <summary>
 		/// сеттеры некоторых полей
 		/// </summary>
-		void setFlagClearArray(bool flag)				{	flagClearArray = flag;		}
-		void setActiveStatus(SortingStatus newStatus)	{	activeStatus = newStatus;	}
+		void setFlagClearArray(bool flag)				{ flagClearArrayAndHash = flag;		}
 
 
 		void addToStatusBar(const std::string& str, bool isFormated=true)
@@ -108,7 +102,7 @@ namespace LAB3 {
 			/// <summary>
 			/// выводит заголовок
 			/// </summary>
-			std::string header{ generatingStrings("Лабораторная работа № 2", "Быстрые методы сортировки последовательностей.") };
+			std::string header{ generatingStrings("Лабораторная работа № 3", "Изучение возможности хэширования данных для организации поиска. ") };
 			std::string header2{ generatingStrings("Группа ПБ-11", "Хакимов А.C.") };
 
 			std::string hr{ delimiter() };
@@ -132,12 +126,12 @@ namespace LAB3 {
 			out << delimiter(' ');
 			out << generatingStrings("Нажмите на клавишу и нажмите ВВОД");
 			out << delimiter('_');
-			out << generatingStrings("( 1 )", "Генерация случайного списка", '.');
-			out << generatingStrings("( 2 )", "Отсортировать список по возрастанию", '.');
-			out << generatingStrings("( 3 )", "Отсортировать список по убыванию", '.');
-			out << generatingStrings("( 4 )", "Перемешать список", '.');
-			out << generatingStrings("( 5 )", "Распечатать список на экран", '.');
-			out << generatingStrings("( 6 )", "Очистить список", '.');
+			out << generatingStrings("( 1 )", "Генерация случайного массива ", '.');
+			out << generatingStrings("( 2 )", "Задать новый размер массива и хеш-таблицы", '.');
+			//out << generatingStrings("( 3 )", "Отсортировать список по убыванию", '.');
+			//out << generatingStrings("( 4 )", "Перемешать список", '.');
+			out << generatingStrings("( 5 )", "Распечатать хеш-таблицу на экран", '.');
+			out << generatingStrings("( 6 )", "Очистить массив и хеш-таблицу", '.');
 			out << generatingStrings("( 0 )", "Выход", '.');
 			out << hr;
 		}
@@ -163,16 +157,16 @@ namespace LAB3 {
 		}
 
 
-		void showStatusList()
+		void showStatusType()
 		{
 			/// <summary>
-			/// выводит служебную информацию о списке
+			/// выводит служебную информацию о типе
 			/// </summary>
-			out << generatingStrings("Статус Списка:", getFlagClearArray() ? "ПУСТОЙ" : "ЗАПОЛНЕН");
+			out << generatingStrings("Статус Массива и Хеш-таблицы:", getFlagClearArrayAndHash() ? "ПУСТО" : "ЗАПОЛНЕНЫ");
 			out << delimiter('-');
-			out << generatingStrings("количество элементов списка:", std::to_string(lst.getSizeList()));
+			out << generatingStrings("количество элементов массива:", std::to_string(myTypeArray.getSize()));
 			out << delimiter('-');
-			out << generatingStrings("Статус сортировки списка:", mapActiveStatus.at(getActiveStatus()));
+			out << generatingStrings("количество элементов хеш-таблицы:", std::to_string(myTypeHashTable.getSize()));
 			out << delimiter();
 		}
 

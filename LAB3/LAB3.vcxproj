@@ -139,11 +139,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="InterfaceMyTypes.cpp" />
     <ClCompile Include="LAB3.cpp" />
+    <ClCompile Include="MyHash.cpp" />
+    <ClCompile Include="myArray.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="enums.h" />
     <ClInclude Include="Interface.h" />
+    <ClInclude Include="InterfaceMyTypes.h" />
+    <ClInclude Include="MyHash.h" />
+    <ClInclude Include="myArray.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
