@@ -26,7 +26,8 @@ namespace LAB3 {
 
 
 		TypeArray myTypeArray;
-		TypeHash myTypeHashTable;
+		TypeHash myTypeHashTableDirectBinding;
+		TypeHash myTypeHashTableOpenAddressin;
 
 		bool flagClearArrayAndHash{ true };
 
@@ -34,20 +35,29 @@ namespace LAB3 {
 	public:
 
 
-		Interface(TypeArray& myTypeArray, TypeHash& myTypeHashTable)
+		Interface(TypeArray& myTypeArray
+			, TypeHash& myTypeHashTableDirectBinding
+			, TypeHash& myTypeHashTableOpenAddressin
+		)
 		: myTypeArray(myTypeArray)
-		, myTypeHashTable(myTypeHashTable)  {}
+		, myTypeHashTableDirectBinding(myTypeHashTableDirectBinding)
+		, myTypeHashTableOpenAddressin(myTypeHashTableOpenAddressin) {}
 
-		Interface(TypeArray&& myTypeArray, TypeHash&& myTypeHashTable)
+		Interface(TypeArray&& myTypeArray
+			, TypeHash&& myTypeHashTableDirectBinding
+			, TypeHash&& myTypeHashTableOpenAddressin
+		)
 		: myTypeArray(myTypeArray)
-		, myTypeHashTable(myTypeHashTable) {}
+		, myTypeHashTableDirectBinding(myTypeHashTableDirectBinding)
+		, myTypeHashTableOpenAddressin(myTypeHashTableOpenAddressin) {}
+
 
 		/// <summary>
 		/// Геттеры некоторых полей
 		/// </summary>
-		auto getMaxTableWidth()			const				{	return maxTableWidth;			}
-		auto getMaxTableColumns()		const				{	return maxTableColumnsInArray;	}
-		bool getFlagClearArrayAndHash()	const				{	return flagClearArrayAndHash;	}
+		constexpr auto getMaxTableWidth()			const	{	return maxTableWidth;			}
+		constexpr auto getMaxTableColumns()			const	{	return maxTableColumnsInArray;	}
+		constexpr bool getFlagClearArrayAndHash()	const	{	return flagClearArrayAndHash;	}
 
 		/// <summary>
 		/// сеттеры некоторых полей
@@ -76,7 +86,7 @@ namespace LAB3 {
 		}
 
 
-		auto addToStatusBar(const std::string&& str, bool isFormated=true)
+		void addToStatusBar(const std::string&& str, bool isFormated=true)
 		{
 			/// <summary>
 			/// принимает rvalue строку и отправляет её в очередь статус бара
@@ -127,9 +137,10 @@ namespace LAB3 {
 			out << generatingStrings("Нажмите на клавишу и нажмите ВВОД");
 			out << delimiter('_');
 			out << generatingStrings("( 1 )", "Распечатать массив на экран", '.');
-			out << generatingStrings("( 2 )", "Распечатать хеш-таблицу на экран", '.');
-			out << generatingStrings("( 3 )", "Обновить массив и хеш-таблицу новыми данными", '.');
-			out << generatingStrings("( 5 )", "Задать новый размер массива и хеш-таблицы", '.');
+			out << generatingStrings("( 2 )", "Распечатать хеш-таблицу на экран (метод ПРЯМОГО СВЯЗЫВАНИЯ)", '.');
+			out << generatingStrings("( 3 )", "Распечатать хеш-таблицу на экран (метод ОТКРЫТОЙ АДРЕСАЦИИ)", '.');
+			out << generatingStrings("( 5 )", "Обновить массив и хеш-таблицы новыми данными", '.');
+			out << generatingStrings("( 6 )", "Задать новый размер массива и хеш-таблиц", '.');
 			out << generatingStrings("( 0 )", "Выход", '.');
 			out << hr;
 		}
@@ -164,13 +175,13 @@ namespace LAB3 {
 			out << delimiter('-');
 			out << generatingStrings("количество элементов массива:", std::to_string(myTypeArray.getSize()));
 			out << delimiter('-');
-			out << generatingStrings("количество элементов хеш-таблицы:", std::to_string(myTypeHashTable.getSize()));
+			out << generatingStrings("количество элементов хеш-таблицы:", std::to_string(myTypeHashTableDirectBinding.getSize()));
 			out << delimiter();
 		}
 
 
 
-		const std::string delimiter(char del = '=') const
+		constexpr  std::string delimiter(char del = '=') const
 		{
 			/// <summary>
 			/// задает строку разделитель, между информацией при выводе

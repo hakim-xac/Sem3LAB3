@@ -39,6 +39,12 @@ namespace LAB3 {
 		}
 
 
+		void resize(size_t newSize)
+		{
+			array.resize(newSize);
+		}
+
+
 		void createRandom()
 		{
 			/*

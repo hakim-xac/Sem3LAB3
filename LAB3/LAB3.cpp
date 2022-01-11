@@ -18,7 +18,7 @@ int main()
 
 
     InterfaceMyTypes<MyArray<int>, MyHash<int>>
-        window{ MyArray<int>(15), MyHash<int>(11) };   
+        window{ MyArray<int>(15), MyHash<int>(11), MyHash<int>(11) };   
 
 
 
@@ -36,20 +36,23 @@ int main()
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Очищаем остальной буфер
         switch (key)
         {
-        case Keys::Exit:                    // 0
-            exit(0);                        // Выход из цикла
+        case Keys::Exit:                                    // 0
+            exit(0);                                        // Выход из цикла
             break;
-        case Keys::PrintArray:              // 1
-            window.showPrintArray();        // Вывод массива на экран
+        case Keys::PrintArray:                              // 1
+            window.showPrintArray();                        // Вывод массива на экран
             break;
-        case Keys::PrintHashTable:          // 2
-            window.showPrintHashTable();    // Вывод хеш-таблицы на экран
+        case Keys::PrintHashTableDirectBinding:             // 2
+            window.showPrintHashTable();                    // Вывод хеш-таблицы на экран (метод ПРЯМОГО СВЯЗЫВАНИЯ)
             break;
-        case Keys::ClearArraiAndHashTable:  // 3
-            window.showClearData(isVisibleClear::OFF);         // Очищаем список
+        case Keys::PrintHashTableOpenAddressing:            // 3
+            window.showPrintHashTable();                    // Вывод хеш-таблицы на экран (метод ОТКРЫТОЙ АДРЕСАЦИИ)
             break;
-        case Keys::ResizemyType:            // 9
-            //window.showResizeList();      // Изменяем размер массива и очищаем его
+        case Keys::UpdateArrayAndHashTable:                 // 5
+            window.showUpdateData(isVisibleClear::OFF);     // Обновляем массив и хеш-таблицу новыми данными
+            break;
+        case Keys::ResizeArray:                             // 6
+            window.showResizeData();                        // Изменяем размер массива и очищаем его, генерируем новые данные массива и хеш-таблицу
             break;
         default:
             window.addToStatusBar("Введена не верная команда!");            // любая клавиша отсутствующая в перечислении Keys

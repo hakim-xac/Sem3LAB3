@@ -1,5 +1,6 @@
 #pragma once
 #include "Interface.h"
+#include <limits>
 
 namespace LAB3 {
 	template <class TypeArray, class TypeHash>
@@ -38,38 +39,45 @@ namespace LAB3 {
 
 
 		template <class Iter>
-		void printHashTable(Iter begin, Iter end, const std::string&& defaultString)   //TODO
+		void printHashTable(Iter begin, Iter end, const std::string&& defaultString)
 		{
 			std::string result{};
 			for (auto it{ begin }, ite{ end }; it != ite; ++it) {
 				std::string tmp{ defaultString };
-				std::string line{ std::to_string(std::distance(begin, it)) + ":"};
+				std::string line{ std::to_string(std::distance(begin, it)) + ": ["};
 				for (auto it2{ (*it).begin() }, ite2{ (*it).end() }; it2 != ite2; ++it2) {
-					line += " --> " + std::to_string(*it2);
+					line += " " + std::to_string(*it2) + ",";
 				}
-				this->addToStatusBar(this->generatingStrings(std::move(line), ""), false);
+				line += " ]";
+				auto countElem{ std::distance((*it).begin(), (*it).end()) };
+				this->addToStatusBar(this->generatingStrings(std::move(line), "count: " + std::to_string(countElem)), false);
 			}
 
 			if (!result.empty()) this->addToStatusBar(this->generatingStrings(result));
 		}
 
 	public:
-		InterfaceMyTypes(TypeArray myTypeArray, TypeHash myTypeHash )
-			: Interface<TypeArray, TypeHash>(myTypeArray, myTypeHash) {}
+		InterfaceMyTypes(TypeArray myTypeArray
+			, TypeHash myTypeHashTableDirectBinding
+			, TypeHash myTypeHashTableOpenAddressin
+		)
+		: Interface<TypeArray, TypeHash>(
+			myTypeArray
+			, myTypeHashTableDirectBinding
+			, myTypeHashTableOpenAddressin
+		) {}
 
-		void showGeneratedRandom()
+		void showGeneratedRandom(isVisibleClear visibleStatus = isVisibleClear::ON)
 		{
 			/// <summary>
 			/// выводит информацию о событии, генерация случайными числами
-			/// </summary>			
-			static bool FirstRun{ true };
+			/// </summary>	
 			this->myTypeArray.createRandom();
-			this->myTypeHashTable.generateHashTable(this->myTypeArray.begin(), this->myTypeArray.end());
+			this->myTypeHashTableDirectBinding.generateHashTableDirectBinding(this->myTypeArray.begin(), this->myTypeArray.end());
 			this->setFlagClearArray(false);
-			if (FirstRun)
+			if (visibleStatus == isVisibleClear::ON)
 			{
 				this->addToStatusBar("Массив успешно создан и заполнен случайными числами!");
-				FirstRun = false;
 			}
 			else
 			{
@@ -104,8 +112,8 @@ namespace LAB3 {
 				this->addToStatusBar(this->generatingStrings("метод создания", "метод прямого связывания"), false);
 				this->addToStatusBar(this->delimiter('-'), false);
 				this->addToStatusBar(this->delimiter(' '), false);
-				auto lengthColumn{ (this->getMaxTableWidth() - 10) / this->myTypeHashTable.getSize()};
-				printHashTable(this->myTypeHashTable.begin(), this->myTypeHashTable.end(), std::string(lengthColumn, ' '));
+				auto lengthColumn{ (this->getMaxTableWidth() - 10) / this->myTypeHashTableDirectBinding.getSize()};
+				printHashTable(this->myTypeHashTableDirectBinding.begin(), this->myTypeHashTableDirectBinding.end(), std::string(lengthColumn, ' '));
 			}
 			else {
 				this->addToStatusBar("Хеш-таблица ещё не заполнена!");
@@ -113,12 +121,12 @@ namespace LAB3 {
 		}
 
 
-		void showClearData(isVisibleClear visibleStatus)
+		void showUpdateData(isVisibleClear visibleStatus = isVisibleClear::ON)
 		{
 			if (!this->getFlagClearArrayAndHash()) {
 				
 				this->myTypeArray.clear();
-				this->myTypeHashTable.clear();
+				this->myTypeHashTableDirectBinding.clear();
 				this->setFlagClearArray(!this->getFlagClearArrayAndHash());
 				if(visibleStatus == isVisibleClear::ON) this->addToStatusBar("Данные успешно очищены!");
 			}
@@ -129,6 +137,33 @@ namespace LAB3 {
 		}
 
 
-		
+		void showResizeData()
+		{
+			std::cout << "Введите новый размер Хеш-таблицы:";
+			size_t newHashSize;
+			std::cin  >> newHashSize;
+			if (std::cin.fail()) {
+				std::cin.clear();
+				std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+				this->addToStatusBar("ОШИБКА ВВОДА ДАННЫХ!");
+				return;
+			}
+			this->myTypeHashTableDirectBinding.resize(newHashSize);
+
+			std::cout << "Введите новый размер массива:";
+			size_t newArraySize;
+			std::cin >> newArraySize;
+			if (std::cin.fail()) {
+				std::cin.clear();
+				std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+				this->addToStatusBar("ОШИБКА ВВОДА ДАННЫХ!");
+				return;
+			}
+			std::cin.clear();
+			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+			this->myTypeArray.resize(newArraySize);
+
+			showGeneratedRandom();
+		}		
 	};
 }
