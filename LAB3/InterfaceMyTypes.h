@@ -43,10 +43,13 @@ namespace LAB3 {
 			std::string result{};
 			for (auto it{ begin }, ite{ end }; it != ite; ++it) {
 				std::string tmp{ defaultString };
-				std::cerr << "n: " << (*it).size() << "\n";
-
+				std::string line{ std::to_string(std::distance(begin, it)) + ":"};
+				for (auto it2{ (*it).begin() }, ite2{ (*it).end() }; it2 != ite2; ++it2) {
+					line += " --> " + std::to_string(*it2);
+				}
+				this->addToStatusBar(this->generatingStrings(std::move(line), ""), false);
 			}
-			system("pause");
+
 			if (!result.empty()) this->addToStatusBar(this->generatingStrings(result));
 		}
 
@@ -58,11 +61,20 @@ namespace LAB3 {
 		{
 			/// <summary>
 			/// выводит информацию о событии, генераци€ случайными числами
-			/// </summary>
+			/// </summary>			
+			static bool FirstRun{ true };
 			this->myTypeArray.createRandom();
 			this->myTypeHashTable.generateHashTable(this->myTypeArray.begin(), this->myTypeArray.end());
 			this->setFlagClearArray(false);
-			this->addToStatusBar("ћассив успешно заполнен случайными числами!");
+			if (FirstRun)
+			{
+				this->addToStatusBar("ћассив успешно создан и заполнен случайными числами!");
+				FirstRun = false;
+			}
+			else
+			{
+				this->addToStatusBar("ћассив успешно обновлен и заполнен новыми случайными числами!");
+			}
 		}
 
 		void showPrintArray()
@@ -89,12 +101,31 @@ namespace LAB3 {
 			if (!this->getFlagClearArrayAndHash()) {
 
 				this->addToStatusBar("¬ывод ’еш таблицы");
+				this->addToStatusBar(this->generatingStrings("метод создани€", "метод пр€мого св€зывани€"), false);
+				this->addToStatusBar(this->delimiter('-'), false);
+				this->addToStatusBar(this->delimiter(' '), false);
 				auto lengthColumn{ (this->getMaxTableWidth() - 10) / this->myTypeHashTable.getSize()};
 				printHashTable(this->myTypeHashTable.begin(), this->myTypeHashTable.end(), std::string(lengthColumn, ' '));
 			}
 			else {
 				this->addToStatusBar("’еш-таблица ещЄ не заполнена!");
 			}
+		}
+
+
+		void showClearData(isVisibleClear visibleStatus)
+		{
+			if (!this->getFlagClearArrayAndHash()) {
+				
+				this->myTypeArray.clear();
+				this->myTypeHashTable.clear();
+				this->setFlagClearArray(!this->getFlagClearArrayAndHash());
+				if(visibleStatus == isVisibleClear::ON) this->addToStatusBar("ƒанные успешно очищены!");
+			}
+			else {
+				this->addToStatusBar("ƒл€ того чтобы очистить, нужно сначала заполнить!");
+			}
+
 		}
 
 

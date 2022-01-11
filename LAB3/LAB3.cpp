@@ -1,7 +1,7 @@
 ﻿#include <iostream>
 #include "enums.h"                  // Подключаем заголовок, содержащий все перечисления
 #include "InterfaceMyTypes.h"                  
-#include "myArray.h"  
+#include "MyArray.h"  
 #include "MyHash.h"  
 
 
@@ -17,14 +17,16 @@ int main()
     Keys key{ Keys::Exit };                         // Задаем по умолчанию команду выхода
 
 
-    InterfaceMyTypes<myArray<int>, MyHash<int>>
-        window{ myArray<int>(15), MyHash<int>(11) };   
+    InterfaceMyTypes<MyArray<int>, MyHash<int>>
+        window{ MyArray<int>(15), MyHash<int>(11) };   
 
 
 
     /* Запускаем бесконечный цикл ожидая ввод команды от пользователя  */
     while (true)
     {
+        if (window.getFlagClearArrayAndHash()) window.showGeneratedRandom();
+
         system("cls");
         window.showHeader();                // Вывод заголовка
         window.showStatusType();            // Вывод служебной информации
@@ -37,26 +39,17 @@ int main()
         case Keys::Exit:                    // 0
             exit(0);                        // Выход из цикла
             break;
-        case Keys::CreateRandommyType:      // 1
-            window.showGeneratedRandom();   // Заполняем список случайными значениями
+        case Keys::PrintArray:              // 1
+            window.showPrintArray();        // Вывод массива на экран
             break;
-        case Keys::AscendingmyType:         // 2
-            //window.showAscendingList();   // Сортируем список по убыванию
+        case Keys::PrintHashTable:          // 2
+            window.showPrintHashTable();    // Вывод хеш-таблицы на экран
             break;
-        case Keys::DesciningmyType:         // 3
-           // window.showDescendingList();  // Сортируем списрк по возрастанию
-            break;
-        case Keys::ShufflemyType:           // 4
-            //window.showShuffleList();     // Перемешиваем список
-            break;
-        case Keys::PrintArray:              // 5
-            window.showPrintArray();        // Вывод списка на экран
-            break;
-        case Keys::PrintHashTable:          // 6
-            window.showPrintHashTable();    // Очищаем список
+        case Keys::ClearArraiAndHashTable:  // 3
+            window.showClearData(isVisibleClear::OFF);         // Очищаем список
             break;
         case Keys::ResizemyType:            // 9
-            //window.showResizeList();      // Изменяем размер списка и очищаем его
+            //window.showResizeList();      // Изменяем размер массива и очищаем его
             break;
         default:
             window.addToStatusBar("Введена не верная команда!");            // любая клавиша отсутствующая в перечислении Keys

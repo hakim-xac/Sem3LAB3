@@ -6,13 +6,13 @@
 namespace LAB3 {
 
 	template<class Type>
-	class myArray
+	class MyArray
 	{
 	private:
 		std::vector <Type> array;
-		myArray() = delete;
+		MyArray() = delete;
 	public:
-		myArray(size_t size)
+		MyArray(size_t size)
 		: array(size)	{}
 
 		/*
@@ -29,6 +29,15 @@ namespace LAB3 {
 
 
 		size_t getSize()	{	return array.size();	}
+
+
+		void clear() 
+		{
+			size_t size{ array.size() };
+			array.clear();
+			array.resize(size);
+		}
+
 
 		void createRandom()
 		{

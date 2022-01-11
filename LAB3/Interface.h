@@ -126,12 +126,10 @@ namespace LAB3 {
 			out << delimiter(' ');
 			out << generatingStrings("Нажмите на клавишу и нажмите ВВОД");
 			out << delimiter('_');
-			out << generatingStrings("( 1 )", "Генерация случайного массива ", '.');
-			out << generatingStrings("( 2 )", "Задать новый размер массива и хеш-таблицы", '.');
-			//out << generatingStrings("( 3 )", "Отсортировать список по убыванию", '.');
-			//out << generatingStrings("( 4 )", "Перемешать список", '.');
-			out << generatingStrings("( 5 )", "Распечатать хеш-таблицу на экран", '.');
-			out << generatingStrings("( 6 )", "Очистить массив и хеш-таблицу", '.');
+			out << generatingStrings("( 1 )", "Распечатать массив на экран", '.');
+			out << generatingStrings("( 2 )", "Распечатать хеш-таблицу на экран", '.');
+			out << generatingStrings("( 3 )", "Обновить массив и хеш-таблицу новыми данными", '.');
+			out << generatingStrings("( 5 )", "Задать новый размер массива и хеш-таблицы", '.');
 			out << generatingStrings("( 0 )", "Выход", '.');
 			out << hr;
 		}

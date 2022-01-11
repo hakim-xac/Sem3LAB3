@@ -35,6 +35,14 @@ namespace LAB3 {
 		size_t getSize()	{	return hash.size();		 }
 
 
+
+		void clear()
+		{
+			size_t size{ hash.size() };
+			hash.clear();
+			hash.resize(size);
+		}
+
 		template <class Iter>
 		void generateHashTable(Iter begin, Iter end)
 		{
@@ -46,6 +54,8 @@ namespace LAB3 {
 				hash[hs].push_back(*it);
 			}
 		}
+
+
 
 	};
 }
