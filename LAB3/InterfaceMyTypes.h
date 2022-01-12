@@ -3,8 +3,8 @@
 #include <limits>
 
 namespace LAB3 {
-	template <class TypeArray, class TypeHash>
-	class InterfaceMyTypes : public Interface<TypeArray, TypeHash>
+	template <class TypeArray, class TypeHashDirectBinding, class TypeHashOpenAdressing>
+	class InterfaceMyTypes : public Interface<TypeArray, TypeHashDirectBinding, TypeHashOpenAdressing>
 	{
 	private:
 
@@ -39,7 +39,7 @@ namespace LAB3 {
 
 
 		template <class Iter>
-		void printHashTable(Iter begin, Iter end, const std::string&& defaultString)
+		void printHashTableDirectBinding(Iter begin, Iter end, const std::string&& defaultString)
 		{
 			std::string result{};
 			for (auto it{ begin }, ite{ end }; it != ite; ++it) {
@@ -56,12 +56,38 @@ namespace LAB3 {
 			if (!result.empty()) this->addToStatusBar(this->generatingStrings(result));
 		}
 
+
+		template <class Iter>
+		void printHashTableOpenAdressing(Iter begin, Iter end, const std::string&& defaultString)
+		{
+			std::string result{};
+			for (auto it{ begin }, ite{ end }; it != ite; ++it) {
+
+				std::string tmp{ defaultString };
+				std::string num{ std::to_string(*it) };
+
+				size_t len{ static_cast<size_t>(std::distance(this->myTypeHashTableOpenAddressin.begin(), it)) };
+				if ((len + 1) % this->getMaxTableColumns() != 0) {
+					tmp.replace(tmp.size() - 1, 1, "|");
+				}
+				tmp.replace((tmp.length() - num.length()) / 2, num.length(), num);
+				result += tmp;
+
+				if ((len + 1) % this->getMaxTableColumns() == 0) {
+					this->addToStatusBar(this->generatingStrings(result), false);
+					this->addToStatusBar(this->delimiter('-'), false);
+					result.clear();
+				}
+			}
+			if (!result.empty()) this->addToStatusBar(this->generatingStrings(result));
+		}
+
 	public:
 		InterfaceMyTypes(TypeArray myTypeArray
-			, TypeHash myTypeHashTableDirectBinding
-			, TypeHash myTypeHashTableOpenAddressin
+			, TypeHashDirectBinding myTypeHashTableDirectBinding
+			, TypeHashOpenAdressing myTypeHashTableOpenAddressin
 		)
-		: Interface<TypeArray, TypeHash>(
+		: Interface<TypeArray, TypeHashDirectBinding, TypeHashOpenAdressing>(
 			myTypeArray
 			, myTypeHashTableDirectBinding
 			, myTypeHashTableOpenAddressin
@@ -74,6 +100,8 @@ namespace LAB3 {
 			/// </summary>	
 			this->myTypeArray.createRandom();
 			this->myTypeHashTableDirectBinding.generateHashTableDirectBinding(this->myTypeArray.begin(), this->myTypeArray.end());
+			this->myTypeHashTableOpenAddressin.generateHashTableOpenAdressing(this->myTypeArray.begin(), this->myTypeArray.end());
+			
 			this->setFlagClearArray(false);
 			if (visibleStatus == isVisibleClear::ON)
 			{
@@ -94,7 +122,7 @@ namespace LAB3 {
 
 				this->addToStatusBar("Вывод массива");
 
-				int lengthColumn{ (this->getMaxTableWidth() - 10) / this->getMaxTableColumns() };
+				auto lengthColumn{ (this->getMaxTableWidth() - 10) / this->getMaxTableColumns() };
 				printArray(this->myTypeArray.begin(), this->myTypeArray.end(), std::string(lengthColumn, ' '));
 
 			}
@@ -104,7 +132,7 @@ namespace LAB3 {
 		}
 
 
-		void showPrintHashTable()
+		void showPrintHashTableDirectBinding()
 		{
 			if (!this->getFlagClearArrayAndHash()) {
 
@@ -112,8 +140,40 @@ namespace LAB3 {
 				this->addToStatusBar(this->generatingStrings("метод создания", "метод прямого связывания"), false);
 				this->addToStatusBar(this->delimiter('-'), false);
 				this->addToStatusBar(this->delimiter(' '), false);
-				auto lengthColumn{ (this->getMaxTableWidth() - 10) / this->myTypeHashTableDirectBinding.getSize()};
-				printHashTable(this->myTypeHashTableDirectBinding.begin(), this->myTypeHashTableDirectBinding.end(), std::string(lengthColumn, ' '));
+
+				size_t lengthColumn{ (this->getMaxTableWidth() - 10) / this->myTypeHashTableDirectBinding.getSize() };
+				
+				printHashTableDirectBinding(this->myTypeHashTableDirectBinding.begin(), this->myTypeHashTableDirectBinding.end(), std::string(lengthColumn, ' '));
+				
+				std::cout << this->delimiter('-');
+				std::cout << this->generatingStrings("Введите число для поиска в Хеш-таблице:");
+				std::cout << this->delimiter('-');
+				int tmp;
+				std::cin >> tmp;
+				std::string showIsFind{ "Число " + std::to_string(tmp) + " " };
+				showIsFind += (this->myTypeHashTableDirectBinding.find(tmp) ? " Найдено!" : " Не найдено!");
+				this->addToStatusBar(std::move(showIsFind));
+				std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+			}
+			else {
+				this->addToStatusBar("Хеш-таблица ещё не заполнена!");
+			}
+		}
+
+
+		void showPrintHashTableOpenAdressing()
+		{
+			if (!this->getFlagClearArrayAndHash()) {
+
+				this->addToStatusBar("Вывод Хеш таблицы");
+				this->addToStatusBar(this->generatingStrings( "метод создания", "метод открытой адресации"), false);
+				this->addToStatusBar(this->delimiter('-'), false);
+				this->addToStatusBar(this->delimiter(' '), false);
+				
+				auto lengthColumn{ (this->getMaxTableWidth() - 10) / this->myTypeHashTableOpenAddressin.getSize() };
+				printHashTableOpenAdressing(this->myTypeHashTableOpenAddressin.begin(), this->myTypeHashTableOpenAddressin.end(), std::string(lengthColumn, ' '));
+				
 			}
 			else {
 				this->addToStatusBar("Хеш-таблица ещё не заполнена!");
@@ -139,7 +199,9 @@ namespace LAB3 {
 
 		void showResizeData()
 		{
-			std::cout << "Введите новый размер Хеш-таблицы:";
+			std::cout << this->delimiter('-');
+			std::cout << this->generatingStrings("Введите новый размер Хеш-таблицы:");
+			std::cout << this->delimiter('-');
 			size_t newHashSize;
 			std::cin  >> newHashSize;
 			if (std::cin.fail()) {
@@ -150,7 +212,10 @@ namespace LAB3 {
 			}
 			this->myTypeHashTableDirectBinding.resize(newHashSize);
 
-			std::cout << "Введите новый размер массива:";
+			std::cout << this->delimiter('-');
+			std::cout << this->generatingStrings("Введите новый размер массива:");
+			std::cout << this->delimiter('-');
+
 			size_t newArraySize;
 			std::cin >> newArraySize;
 			if (std::cin.fail()) {

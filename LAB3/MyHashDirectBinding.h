@@ -7,10 +7,10 @@
 namespace LAB3 {
 
 	template <class Type>
-	class MyHash
+	class MyHashDirectBinding
 	{
 		std::vector <std::list<Type>> hash;
-		MyHash() = delete;
+		MyHashDirectBinding() = delete;
 	private:
 		Type hashFunc(Type value)
 		{
@@ -18,7 +18,7 @@ namespace LAB3 {
 		};
 
 	public:
-		MyHash(size_t size)
+		MyHashDirectBinding(size_t size)
 		: hash(size, std::list<Type>()) {}
 
 
@@ -48,6 +48,17 @@ namespace LAB3 {
 			hash.resize(size);
 		}
 
+
+		bool find(Type n)
+		{
+			for (auto it{ hash.begin() }, ite{ hash.end() }; it != ite; ++it)
+			{
+				if (std::find((*it).begin(), (*it).end(), n) != (*it).end()) return true;
+			}
+			return false;
+		}
+
+
 		template <class Iter>
 		void generateHashTableDirectBinding(Iter begin, Iter end)
 		{
@@ -59,20 +70,6 @@ namespace LAB3 {
 				hash[hs].push_back(*it);
 			}
 		}
-
-		template <class Iter>
-		void generateHashTableOpenAddressing(Iter begin, Iter end)					// TODO
-		{
-			size_t size{ hash.size() };
-			hash.clear();
-			hash.resize(size);
-			for (auto it{ begin }, ite{ end }; it != ite; ++it) {
-				auto hs{ this->hashFunc(*it) };
-				hash[hs].push_back(*it);
-			}
-		}
-
-
 
 	};
 }

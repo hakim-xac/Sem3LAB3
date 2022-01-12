@@ -2,7 +2,8 @@
 #include "enums.h"                  // Подключаем заголовок, содержащий все перечисления
 #include "InterfaceMyTypes.h"                  
 #include "MyArray.h"  
-#include "MyHash.h"  
+#include "MyHashDirectBinding.h"  
+#include "MyHashOpenAdressing.h"  
 
 
 
@@ -17,8 +18,8 @@ int main()
     Keys key{ Keys::Exit };                         // Задаем по умолчанию команду выхода
 
 
-    InterfaceMyTypes<MyArray<int>, MyHash<int>>
-        window{ MyArray<int>(15), MyHash<int>(11), MyHash<int>(11) };   
+    InterfaceMyTypes<MyArray<int>, MyHashDirectBinding<int>, MyHashOpenAdressing<int>>
+        window{ MyArray<int>(15), MyHashDirectBinding<int>(11), MyHashOpenAdressing<int>(11) };
 
 
 
@@ -43,10 +44,10 @@ int main()
             window.showPrintArray();                        // Вывод массива на экран
             break;
         case Keys::PrintHashTableDirectBinding:             // 2
-            window.showPrintHashTable();                    // Вывод хеш-таблицы на экран (метод ПРЯМОГО СВЯЗЫВАНИЯ)
+            window.showPrintHashTableDirectBinding();       // Вывод хеш-таблицы на экран (метод ПРЯМОГО СВЯЗЫВАНИЯ)
             break;
         case Keys::PrintHashTableOpenAddressing:            // 3
-            window.showPrintHashTable();                    // Вывод хеш-таблицы на экран (метод ОТКРЫТОЙ АДРЕСАЦИИ)
+            window.showPrintHashTableOpenAdressing();       // Вывод хеш-таблицы на экран (метод ОТКРЫТОЙ АДРЕСАЦИИ)
             break;
         case Keys::UpdateArrayAndHashTable:                 // 5
             window.showUpdateData(isVisibleClear::OFF);     // Обновляем массив и хеш-таблицу новыми данными

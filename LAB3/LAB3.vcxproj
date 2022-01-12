@@ -141,15 +141,17 @@
   <ItemGroup>
     <ClCompile Include="InterfaceMyTypes.cpp" />
     <ClCompile Include="LAB3.cpp" />
-    <ClCompile Include="MyHash.cpp" />
+    <ClCompile Include="MyHashDirectBinding.cpp" />
     <ClCompile Include="MyArray.cpp" />
+    <ClCompile Include="MyHashOpenAdressing.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="enums.h" />
     <ClInclude Include="Interface.h" />
     <ClInclude Include="InterfaceMyTypes.h" />
-    <ClInclude Include="MyHash.h" />
+    <ClInclude Include="MyHashDirectBinding.h" />
     <ClInclude Include="MyArray.h" />
+    <ClInclude Include="MyHashOpenAdressing.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -24,7 +24,10 @@
     <ClCompile Include="InterfaceMyTypes.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="MyHash.cpp">
+    <ClCompile Include="MyHashDirectBinding.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="MyHashOpenAdressing.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
@@ -41,7 +44,10 @@
     <ClInclude Include="InterfaceMyTypes.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="MyHash.h">
+    <ClInclude Include="MyHashDirectBinding.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="MyHashOpenAdressing.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

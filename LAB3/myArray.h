@@ -52,7 +52,7 @@ namespace LAB3 {
 			*/
 			srand(static_cast<unsigned int>(time(0)));
 			std::for_each(array.begin(), array.end(), [](Type& item) {
-				item = rand() % std::numeric_limits<Type>::max();
+				item = 1 + rand() % (std::numeric_limits<Type>::max() - 1 );
 				});
 		}
 	};

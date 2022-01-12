@@ -7,7 +7,7 @@
 
 namespace LAB3 {
 
-	template <class TypeArray, class TypeHash>
+	template <class TypeArray, class TypeHashDirectBinding, class TypeHashOpenAdressing>
 	class Interface
 	{
 	/// <summary>
@@ -16,7 +16,7 @@ namespace LAB3 {
 	/// <typeparam name="TypeElem">Тип "myType"</typeparam>
 	private:
 		std::ostream& out				{ std::cout };								// буфер вывода
-		int maxTableWidth				{ 110 };									// ширина выводимой строки
+		size_t maxTableWidth			{ 110 };									// ширина выводимой строки
 		int maxTableColumnsInArray		{ 5 };										// количество колонов при выводе массива
 		std::queue <std::string> bufferForStatusBar	{};								// очередь для статус бара
 
@@ -26,8 +26,8 @@ namespace LAB3 {
 
 
 		TypeArray myTypeArray;
-		TypeHash myTypeHashTableDirectBinding;
-		TypeHash myTypeHashTableOpenAddressin;
+		TypeHashDirectBinding myTypeHashTableDirectBinding;
+		TypeHashOpenAdressing myTypeHashTableOpenAddressin;
 
 		bool flagClearArrayAndHash{ true };
 
@@ -36,16 +36,16 @@ namespace LAB3 {
 
 
 		Interface(TypeArray& myTypeArray
-			, TypeHash& myTypeHashTableDirectBinding
-			, TypeHash& myTypeHashTableOpenAddressin
+			, TypeHashDirectBinding& myTypeHashTableDirectBinding
+			, TypeHashOpenAdressing& myTypeHashTableOpenAddressin
 		)
 		: myTypeArray(myTypeArray)
 		, myTypeHashTableDirectBinding(myTypeHashTableDirectBinding)
 		, myTypeHashTableOpenAddressin(myTypeHashTableOpenAddressin) {}
 
 		Interface(TypeArray&& myTypeArray
-			, TypeHash&& myTypeHashTableDirectBinding
-			, TypeHash&& myTypeHashTableOpenAddressin
+			, TypeHashDirectBinding&& myTypeHashTableDirectBinding
+			, TypeHashOpenAdressing&& myTypeHashTableOpenAddressin
 		)
 		: myTypeArray(myTypeArray)
 		, myTypeHashTableDirectBinding(myTypeHashTableDirectBinding)
@@ -55,7 +55,7 @@ namespace LAB3 {
 		/// <summary>
 		/// Геттеры некоторых полей
 		/// </summary>
-		constexpr auto getMaxTableWidth()			const	{	return maxTableWidth;			}
+		constexpr size_t getMaxTableWidth()			const	{	return maxTableWidth;			}
 		constexpr auto getMaxTableColumns()			const	{	return maxTableColumnsInArray;	}
 		constexpr bool getFlagClearArrayAndHash()	const	{	return flagClearArrayAndHash;	}
 
@@ -287,7 +287,6 @@ namespace LAB3 {
 				return std::string();
 			}
 		}
-
 
 	};
 }

@@ -14,6 +14,7 @@ namespace LAB3 {
 		ON
 		, OFF
 	};
+
 }
 
 
