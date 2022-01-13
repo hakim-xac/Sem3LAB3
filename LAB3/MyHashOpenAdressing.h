@@ -12,57 +12,104 @@ namespace LAB3 {
 		std::vector <Type> hash;
 		MyHashOpenAdressing() = delete;
 	private:
-		Type hashFunc(Type value)
-		{
-			return value % hash.size();
-		};
+
+		Type hashFunc(Type value);
 
 	public:
-		MyHashOpenAdressing(size_t size)
-			: hash(size, Type()) {}
+		MyHashOpenAdressing(size_t size);
 
+		auto begin();
+		auto end();
 
-		auto begin() { return hash.begin(); }
-		auto end() { return hash.end(); }
-		auto cbegin() { return hash.cbegin(); }
-		auto cend() { return hash.cend(); }
-		auto rbegin() { return hash.rbegin(); }
-		auto rend() { return hash.rend(); }
-		auto crbegin() { return hash.crbegin(); }
-		auto crend() { return hash.crend(); }
+		size_t getSize();
 
-
-		size_t getSize() { return hash.size(); }
-
-
-		void resize(size_t newSize)
-		{
-			hash.resize(newSize);
-		}
-
-
-		void clear()
-		{
-			size_t size{ hash.size() };
-			hash.clear();
-			hash.resize(size);
-		}
-
-
-
-
+		void resize(size_t newSize);
+		void clear();
 		template <class Iter>
-		void generateHashTableOpenAdressing(Iter begin, Iter end)
-		{
-			size_t size{ hash.size() };
-			hash.clear();
-			hash.resize(size);
-			for (auto it{ begin }, ite{ end }; it != ite; ++it) {
-				auto hs{ this->hashFunc(*it) };
-				size_t d{ 1 };
-				/// TODO
-			}
-		}
+		void generateHashTableOpenAdressing(Iter begin, Iter end);
 	};
 }
 
+
+
+
+/***************************************************************************************************************************/
+/***************************************************************************************************************************/
+/***************************************************************************************************************************/
+/***************************************************************************************************************************/
+
+
+
+
+
+template <class Type>
+Type LAB3::MyHashOpenAdressing<Type>
+::hashFunc(Type value)
+{
+	return value % hash.size();
+}
+
+
+template <class Type>
+LAB3::MyHashOpenAdressing<Type>
+::MyHashOpenAdressing(size_t size)
+	: hash(size, Type{}) {}
+
+
+
+template <class Type>
+auto LAB3::MyHashOpenAdressing<Type>
+::begin()
+{
+	return hash.begin();
+}
+
+
+template <class Type>
+auto LAB3::MyHashOpenAdressing<Type>
+::end()
+{
+	return hash.end();
+}
+
+
+template <class Type>
+size_t LAB3::MyHashOpenAdressing<Type>
+::getSize()
+{
+	return hash.size(); 
+}
+
+
+template <class Type>
+void LAB3::MyHashOpenAdressing<Type>
+::resize(size_t newSize)
+{
+	hash.resize(newSize);
+}
+
+
+template <class Type>
+void LAB3::MyHashOpenAdressing<Type>
+::clear()
+{
+	size_t size{ hash.size() };
+	hash.clear();
+	hash.resize(size);
+}
+
+
+template <class Type>
+template <class Iter>
+void LAB3::MyHashOpenAdressing<Type>
+::generateHashTableOpenAdressing(Iter begin, Iter end)
+{
+	size_t size{ hash.size() };
+	hash.clear();
+	hash.resize(size);
+	for (auto it{ begin }, ite{ end }; it != ite; ++it) {
+		auto hs{ this->hashFunc(*it) };
+		size_t d{ 1 };
+		/// TODO
+	}
+}
