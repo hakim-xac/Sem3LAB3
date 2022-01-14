@@ -114,19 +114,23 @@ void LAB3::InterfaceMyTypes<TypeArray, TypeHashDirectBinding, TypeHashOpenAdress
 			std::string tmp{ defaultString };
 			std::string num{ std::to_string(*it) };
 
+			
+
 			size_t len{ static_cast<size_t>(std::distance(this->myTypeHashTableOpenAddressin.begin(), it)) };
 			if ((len + 1) % this->getMaxTableColumns() != 0) {
 				tmp.replace(tmp.size() - 1, 1, "|");
 			}
 			tmp.replace((tmp.length() - num.length()) / 2, num.length(), num);
 			result += tmp;
-
+			
 			if ((len + 1) % this->getMaxTableColumns() == 0) {
 				this->addToStatusBar(this->generatingStrings(result), false);
 				this->addToStatusBar(this->delimiter('-'), false);
 				result.clear();
 			}
 		}
+			std::cout << "n: " << result << "|\n";
+			system("pause");
 		if (!result.empty()) this->addToStatusBar(this->generatingStrings(result));
 	
 }
@@ -153,7 +157,7 @@ void LAB3::InterfaceMyTypes<TypeArray, TypeHashDirectBinding, TypeHashOpenAdress
 	/// </summary>	
 	this->myTypeArray.createRandom();
 	this->myTypeHashTableDirectBinding.generateHashTableDirectBinding(this->myTypeArray.begin(), this->myTypeArray.end());
-	this->myTypeHashTableOpenAddressin.generateHashTableOpenAdressing(this->myTypeArray.begin(), this->myTypeArray.end());
+	this->myTypeHashTableOpenAdressin.generateHashTableOpenAdressingQuadType(this->myTypeArray.begin(), this->myTypeArray.end());
 
 	this->setFlagClearArray(false);
 	if (visibleStatus == isVisibleClear::ON)
@@ -220,9 +224,8 @@ void LAB3::InterfaceMyTypes<TypeArray, TypeHashDirectBinding, TypeHashOpenAdress
 		this->addToStatusBar(this->delimiter('-'), false);
 		this->addToStatusBar(this->delimiter(' '), false);
 
-		auto lengthColumn{ (this->getMaxTableWidth() - 10) / this->myTypeHashTableOpenAddressin.getSize() };
-		printHashTableOpenAdressing(this->myTypeHashTableOpenAddressin.begin(), this->myTypeHashTableOpenAddressin.end(), std::string(lengthColumn, ' '));
-
+		//auto lengthColumn{ (this->getMaxTableWidth() - 10) / this->myTypeHashTableOpenAdressing.getSize() };
+		/////TODO
 	}
 	else {
 		this->addToStatusBar("Хеш-таблица ещё не заполнена!");
@@ -290,8 +293,14 @@ void LAB3::InterfaceMyTypes<TypeArray, TypeHashDirectBinding, TypeHashOpenAdress
 	std::cout << this->delimiter('-');
 	std::cout << this->generatingStrings("Введите число для поиска в Хеш-таблице:");
 	std::cout << this->delimiter('-');
-	int tmp;
+	int tmp{};
 	std::cin >> tmp;
+	if (std::cin.fail()) {
+		std::cin.clear();
+		std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+		this->addToStatusBar("ОШИБКА ВВОДА ДАННЫХ!");
+		return;
+	}
 	std::string showIsFind{ "Число " + std::to_string(tmp) + " " };
 	showIsFind += (this->myTypeHashTableDirectBinding.find(tmp) ? " Найдено!" : " Не найдено!");
 	this->addToStatusBar(std::move(showIsFind));

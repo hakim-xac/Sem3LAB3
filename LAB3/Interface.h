@@ -28,7 +28,10 @@ namespace LAB3 {
 
 		TypeArray myTypeArray;
 		TypeHashDirectBinding myTypeHashTableDirectBinding;
-		TypeHashOpenAdressing myTypeHashTableOpenAddressin;
+		TypeHashOpenAdressing myTypeHashTableOpenAdressin;
+
+		void addToStatusBar(const std::string& str, bool isFormated = true);
+		void addToStatusBar(const std::string&& str, bool isFormated = true);
 
 		bool flagClearArrayAndHash								{ true };
 
@@ -54,21 +57,18 @@ namespace LAB3 {
 
 		void setFlagClearArray(bool flag);
 
-		void addToStatusBar(const std::string& str, bool isFormated = true);
-		void addToStatusBar(const std::string&& str, bool isFormated = true);
-
-		void showHeader();
-		void showMenu();
+		constexpr void showHeader();
+		constexpr void showMenu();
 		void showStatusBar();
 		void showStatusType();
 
 		constexpr  std::string delimiter(char del = '=') const;
 
-		const std::string generatingStrings(const std::string& str, char del = ' ') const;
-		const std::string generatingStrings(const std::string&& str, char del = ' ') const;
+		constexpr const std::string generatingStrings(const std::string& str, char del = ' ') const;
+		constexpr const std::string generatingStrings(const std::string&& str, char del = ' ') const;
 
-		const std::string generatingStrings(const std::string& str, const std::string& str2, char del = ' ') const;
-		const std::string generatingStrings(const std::string&& str, const std::string&& str2, char del = ' ') const;
+		constexpr const std::string generatingStrings(const std::string& str, const std::string& str2, char del = ' ') const;
+		constexpr const std::string generatingStrings(const std::string&& str, const std::string&& str2, char del = ' ') const;
 
 	};
 }
@@ -86,11 +86,11 @@ LAB3::Interface<TypeArray, TypeHashDirectBinding, TypeHashOpenAdressing>
 ::Interface(
 	TypeArray& myTypeArray
 	, TypeHashDirectBinding& myTypeHashTableDirectBinding
-	, TypeHashOpenAdressing& myTypeHashTableOpenAddressin
+	, TypeHashOpenAdressing& myTypeHashTableOpenAdressin
 	)
 	: myTypeArray(myTypeArray)
 	, myTypeHashTableDirectBinding(myTypeHashTableDirectBinding)
-	, myTypeHashTableOpenAddressin(myTypeHashTableOpenAddressin) {}
+	, myTypeHashTableOpenAdressin(myTypeHashTableOpenAdressin) {}
 
 
 template <class TypeArray, class TypeHashDirectBinding, class TypeHashOpenAdressing>
@@ -102,7 +102,7 @@ LAB3::Interface<TypeArray, TypeHashDirectBinding, TypeHashOpenAdressing>
 	)
 	: myTypeArray(myTypeArray)
 	, myTypeHashTableDirectBinding(myTypeHashTableDirectBinding)
-	, myTypeHashTableOpenAddressin(myTypeHashTableOpenAddressin) {}
+	, myTypeHashTableOpenAdressin(myTypeHashTableOpenAdressin) {}
 
 
 template <class TypeArray, class TypeHashDirectBinding, class TypeHashOpenAdressing>
@@ -185,7 +185,7 @@ void LAB3::Interface<TypeArray, TypeHashDirectBinding, TypeHashOpenAdressing>
 
 
 template <class TypeArray, class TypeHashDirectBinding, class TypeHashOpenAdressing>
-void LAB3::Interface<TypeArray, TypeHashDirectBinding, TypeHashOpenAdressing>
+constexpr void LAB3::Interface<TypeArray, TypeHashDirectBinding, TypeHashOpenAdressing>
 ::showHeader()
 {
 
@@ -203,7 +203,7 @@ void LAB3::Interface<TypeArray, TypeHashDirectBinding, TypeHashOpenAdressing>
 
 
 template <class TypeArray, class TypeHashDirectBinding, class TypeHashOpenAdressing>
-void LAB3::Interface<TypeArray, TypeHashDirectBinding, TypeHashOpenAdressing>
+constexpr void LAB3::Interface<TypeArray, TypeHashDirectBinding, TypeHashOpenAdressing>
 ::showMenu()
 {
 	std::string hr{ delimiter() };
@@ -267,7 +267,7 @@ constexpr std::string LAB3::Interface<TypeArray, TypeHashDirectBinding, TypeHash
 
 
 template <class TypeArray, class TypeHashDirectBinding, class TypeHashOpenAdressing>
-const std::string LAB3::Interface<TypeArray, TypeHashDirectBinding, TypeHashOpenAdressing>
+constexpr const std::string LAB3::Interface<TypeArray, TypeHashDirectBinding, TypeHashOpenAdressing>
 ::generatingStrings(const std::string& str, char del) const
 {
 	return generatingStrings(std::move(str), del);
@@ -275,7 +275,7 @@ const std::string LAB3::Interface<TypeArray, TypeHashDirectBinding, TypeHashOpen
 
 
 template <class TypeArray, class TypeHashDirectBinding, class TypeHashOpenAdressing>
-const std::string LAB3::Interface<TypeArray, TypeHashDirectBinding, TypeHashOpenAdressing>
+constexpr const std::string LAB3::Interface<TypeArray, TypeHashDirectBinding, TypeHashOpenAdressing>
 ::generatingStrings(const std::string&& str, char del) const
 {
 	/// <summary>
@@ -301,7 +301,7 @@ const std::string LAB3::Interface<TypeArray, TypeHashDirectBinding, TypeHashOpen
 
 
 template <class TypeArray, class TypeHashDirectBinding, class TypeHashOpenAdressing>
-const std::string LAB3::Interface<TypeArray, TypeHashDirectBinding, TypeHashOpenAdressing>
+constexpr const std::string LAB3::Interface<TypeArray, TypeHashDirectBinding, TypeHashOpenAdressing>
 ::generatingStrings(const std::string& str, const std::string& str2, char del) const
 {
 	return generatingStrings(std::move(str), std::move(str2), std::move(del));
@@ -309,7 +309,7 @@ const std::string LAB3::Interface<TypeArray, TypeHashDirectBinding, TypeHashOpen
 
 
 template <class TypeArray, class TypeHashDirectBinding, class TypeHashOpenAdressing>
-const std::string LAB3::Interface<TypeArray, TypeHashDirectBinding, TypeHashOpenAdressing>
+constexpr const std::string LAB3::Interface<TypeArray, TypeHashDirectBinding, TypeHashOpenAdressing>
 ::generatingStrings(const std::string&& str, const std::string&& str2, char del) const
 {
 	try {
