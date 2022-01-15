@@ -26,7 +26,7 @@ namespace LAB3 {
 		void resize(size_t newSize);
 		void clear();
 		template <class Iter>
-		void generateHashTableOpenAdressingLineType(Iter begin, Iter end);
+		bool generateHashTableOpenAdressingLineType(Iter begin, Iter end);
 
 		template <class Iter>
 		bool generateHashTableOpenAdressingQuadType(Iter begin, Iter end);
@@ -104,21 +104,37 @@ void LAB3::MyHashOpenAdressing<Type>
 
 template <class Type>
 template <class Iter>
-void LAB3::MyHashOpenAdressing<Type>
+bool LAB3::MyHashOpenAdressing<Type>
 ::generateHashTableOpenAdressingLineType(Iter begin, Iter end)
 {
 	size_t size{ hash.size() };
 	hash.clear();
 	hash.resize(size);
-	size_t cnt{};
+	auto arrayLength{ std::distance(begin, end) };
+	size_t collision{};
+	auto hs{ *begin };
 	for (auto it{ begin }, ite{ end }; it != ite; ++it) {
-		auto hs{ this->hashFunc(*it) };	
-		auto copyHs{ hs };
-		auto itHs{std::next(it, hs)};
-		++cnt;
-
-		/// TODO
+		hs = this->hashFunc(*it);
+		size_t d{ 1 };
+		for (;;)
+		{
+			if (hash.at(hs) == *it) break;
+			if (hash.at(hs) == 0)
+			{
+				hash[hs] = *it;
+				break;
+			}
+			if (d >= hash.size())
+			{
+				return true;
+			}
+			++collision;
+			hs += d;
+			if (hs >= size) hs -= hash.size();
+			++d;
+		}
 	}
+	return false;
 }
 
 
@@ -144,50 +160,15 @@ bool LAB3::MyHashOpenAdressing<Type>
 				hash[hs] = *it;
 				break;
 			}
-			if (d >= arrayLength)
+			if (d >= hash.size())
 			{
 				return true;
 			}
 			++collision;
 			hs += d;
-			if (hs >= size) hs -= size;
-			++d;
+			if (hs >= size) hs -= hash.size();
+			d += 2;
 		}
-		/// TODO
 	}
 	return false;
 }
-
-
-
-/*
-
-  int i;
-  for (i = 0; i < m; i++)
-	table[i] = 0;
-  collisions = 0;
-  int h, h0, g;
-  for (i = 0; i < n; i++) {
-	h = HashF(a[i]);
-	h0 = h;
-	g = 1;
-	while (1) {
-	  if (table[h] == a[i])
-		break;
-	  if (table[h] == 0) {
-		table[h] = a[i];
-		break;
-	  }
-	  if (g >= m) {
-		overflow = true;
-		return;
-	  }
-	  collisions++;
-	  h = h0 + g;
-	  if (h >= m)
-		h -= m;
-	  g++;
-	}
-  }
-  overflow = false;
-*/

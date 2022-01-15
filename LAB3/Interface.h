@@ -214,10 +214,11 @@ constexpr void LAB3::Interface<TypeArray, TypeHashDirectBinding, TypeHashOpenAdr
 	out << delimiter('_');
 	out << generatingStrings("( 1 )", "Распечатать массив на экран", '.');
 	out << generatingStrings("( 2 )", "Распечатать хеш-таблицу на экран (метод ПРЯМОГО СВЯЗЫВАНИЯ)", '.');
-	out << generatingStrings("( 3 )", "Распечатать хеш-таблицу на экран (метод ОТКРЫТОЙ АДРЕСАЦИИ)", '.');
-	out << generatingStrings("( 4 )", "Поиск числа в хеш-таблице", '.');
-	out << generatingStrings("( 5 )", "Обновить массив и хеш-таблицы новыми данными", '.');
-	out << generatingStrings("( 6 )", "Задать новый размер массива и хеш-таблиц", '.');
+	out << generatingStrings("( 3 )", "Распечатать хеш-таблицу на экран (метод ОТКРЫТОЙ АДРЕСАЦИИ, использованы линейные пробы)", '.');
+	out << generatingStrings("( 4 )", "Распечатать хеш-таблицу на экран (метод ОТКРЫТОЙ АДРЕСАЦИИ, использованы квадратичные пробы)", '.');
+	out << generatingStrings("( 5 )", "Поиск числа в хеш-таблице", '.');
+	out << generatingStrings("( 6 )", "Обновить массив и хеш-таблицы новыми данными", '.');
+	out << generatingStrings("( 7 )", "Задать новый размер массива и хеш-таблиц", '.');
 	out << generatingStrings("( 0 )", "Выход", '.');
 	out << hr;
 }
