@@ -31,7 +31,7 @@ namespace LAB3 {
 		void showPrintArray();
 
 		void showPrintHashTableDirectBinding();
-		void showPrintHashTableOpenAdressing();
+		void showPrintHashTableOpenAdressing(TypeOpenAdressing typeOpen);
 
 		void showUpdateData(isVisibleClear visibleStatus = isVisibleClear::ON);
 		void showResizeData();
@@ -157,16 +157,15 @@ void LAB3::InterfaceMyTypes<TypeArray, TypeHashDirectBinding, TypeHashOpenAdress
 	/// </summary>	
 	this->myTypeArray.createRandom();
 	this->myTypeHashTableDirectBinding.generateHashTableDirectBinding(this->myTypeArray.begin(), this->myTypeArray.end());
-	this->myTypeHashTableOpenAdressin.generateHashTableOpenAdressingQuadType(this->myTypeArray.begin(), this->myTypeArray.end());
 
 	this->setFlagClearArray(false);
 	if (visibleStatus == isVisibleClear::ON)
 	{
-		this->addToStatusBar("Массив успешно создан и заполнен случайными числами!");
+		this->addToStatusBar("Данные успешно сгенерированны случайными числами!");
 	}
 	else
 	{
-		this->addToStatusBar("Массив успешно обновлен и заполнен новыми случайными числами!");
+		this->addToStatusBar("Данные успешно обновлены новыми случайными числами!");
 	}
 }
 
@@ -215,17 +214,67 @@ void LAB3::InterfaceMyTypes<TypeArray, TypeHashDirectBinding, TypeHashOpenAdress
 
 template <class TypeArray, class TypeHashDirectBinding, class TypeHashOpenAdressing>
 void LAB3::InterfaceMyTypes<TypeArray, TypeHashDirectBinding, TypeHashOpenAdressing>
-::showPrintHashTableOpenAdressing()
+::showPrintHashTableOpenAdressing(TypeOpenAdressing typeOpen)
 {
 	if (!this->getFlagClearArrayAndHash()) {
 
+
 		this->addToStatusBar("Вывод Хеш таблицы");
-		this->addToStatusBar(this->generatingStrings("метод создания", "метод открытой адресации"), false);
+		if (typeOpen == TypeOpenAdressing::Line)
+		{
+			this->myTypeHashTableOpenAdressin.generateHashTableOpenAdressingLineType(this->myTypeArray.begin(), this->myTypeArray.end());
+			this->addToStatusBar(this->generatingStrings("метод создания", "метод открытой адресации (линейные пробы)"), false);
+		}
+		else
+		{
+			this->myTypeHashTableOpenAdressin.generateHashTableOpenAdressingQuadType(this->myTypeArray.begin(), this->myTypeArray.end());
+			this->addToStatusBar(this->generatingStrings("метод создания", "метод открытой адресации (квадратичные пробы)"), false);
+		}
+
 		this->addToStatusBar(this->delimiter('-'), false);
 		this->addToStatusBar(this->delimiter(' '), false);
 
-		//auto lengthColumn{ (this->getMaxTableWidth() - 10) / this->myTypeHashTableOpenAdressing.getSize() };
-		/////TODO
+		std::string textNumber	{ "Номер ячейки:" };
+		std::string textItem	{ "Число:       " };
+
+		auto lengthColumn{ (this->getMaxTableWidth() - 10 - textNumber.size()) / this->getMaxTableColumns() };
+		int countLines{ static_cast<int>(std::ceil(static_cast<double>(this->myTypeHashTableOpenAdressin.getSize()) / this->getMaxTableColumns())) };
+
+		this->addToStatusBar(this->delimiter(), false);
+		for (int i{}; i < countLines; ++i)
+		{
+			auto start{ this->getMaxTableColumns() * i  };
+			auto finish{ this->getMaxTableColumns() * (i + 1)  };
+			if (finish > this->myTypeHashTableOpenAdressin.getSize()) finish = this->myTypeHashTableOpenAdressin.getSize();
+			auto begin{ std::next(this->myTypeHashTableOpenAdressin.begin(), start) };
+			auto end{ std::next(this->myTypeHashTableOpenAdressin.begin(), finish) };
+
+
+			std::string line{};
+			for (auto it{ begin }, ite{ end }; it != ite; ++it)
+			{
+				std::string tmpString{ std::string(lengthColumn, ' ') };
+				std::string its{ std::to_string(std::distance(begin, it) + start ) };
+				tmpString.replace((tmpString.length() - its.length()) / 2, its.length(), its);
+				line += tmpString;
+			}
+			this->addToStatusBar(this->generatingStrings(textNumber, std::move(line)), false);
+			this->addToStatusBar(this->delimiter('.'), false);
+
+			line.clear();
+			for (auto it{ begin }, ite{ end }; it != ite; ++it)
+			{
+				std::string tmpString{ std::string(lengthColumn, ' ') };
+				std::string its{ std::to_string(*it) };
+				tmpString.replace((tmpString.length() - its.length()) / 2, its.length(), its);
+				line += tmpString;
+			}
+			this->addToStatusBar(this->generatingStrings(textItem, std::move(line)), false);
+			line.clear();
+			if( i < countLines - 1) this->addToStatusBar(this->delimiter('-'), false);
+		}
+
+		this->addToStatusBar(this->delimiter(), false);				
 	}
 	else {
 		this->addToStatusBar("Хеш-таблица ещё не заполнена!");
@@ -328,8 +377,11 @@ void LAB3::InterfaceMyTypes<TypeArray, TypeHashDirectBinding, TypeHashOpenAdress
 	case Keys::PrintHashTableDirectBinding:             // 2
 		showPrintHashTableDirectBinding();       // Вывод хеш-таблицы на экран (метод ПРЯМОГО СВЯЗЫВАНИЯ)
 		break;
-	case Keys::PrintHashTableOpenAddressing:            // 3
-		showPrintHashTableOpenAdressing();       // Вывод хеш-таблицы на экран (метод ОТКРЫТОЙ АДРЕСАЦИИ)
+	case Keys::PrintHashTableOpenAdressingLineType:     // 3
+		showPrintHashTableOpenAdressing(TypeOpenAdressing::Line);	// Вывод хеш-таблицы на экран (метод ОТКРЫТОЙ АДРЕСАЦИИ, Для разрешения коллизий использованы линейные пробы)
+		break;
+	case Keys::PrintHashTableOpenAdressingQuadType:     // 3
+		showPrintHashTableOpenAdressing(TypeOpenAdressing::Quad);	// Вывод хеш-таблицы на экран (метод ОТКРЫТОЙ АДРЕСАЦИИ, Для разрешения коллизий использованы линейные пробы)
 		break;
 	case Keys::SearchNumber:                     // 4
 		searchNumber();		                     // Поиск числа в Хеш
