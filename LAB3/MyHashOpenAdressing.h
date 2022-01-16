@@ -28,7 +28,7 @@ namespace LAB3 {
 		void clear();
 
 		template <class Iter>
-		bool generateHashTableOpenAdressing(Iter begin, Iter end, TypeOpenAdressing typeOpen);
+		std::pair<size_t, bool> generateHashTableOpenAdressing(Iter begin, Iter end, TypeOpenAdressing typeOpen);
 	};
 }
 
@@ -103,7 +103,7 @@ void LAB3::MyHashOpenAdressing<Type>
 
 template <class Type>
 template <class Iter>
-bool LAB3::MyHashOpenAdressing<Type>
+std::pair<size_t, bool> LAB3::MyHashOpenAdressing<Type>
 ::generateHashTableOpenAdressing(Iter begin, Iter end, TypeOpenAdressing typeOpen)
 {
 	size_t size{ hash.size() };
@@ -125,7 +125,7 @@ bool LAB3::MyHashOpenAdressing<Type>
 			}
 			if (d >= hash.size())
 			{
-				return true;
+				return { collision , true};
 			}
 			++collision;
 			hs += d;
@@ -133,5 +133,5 @@ bool LAB3::MyHashOpenAdressing<Type>
 			d += (typeOpen == TypeOpenAdressing::Line ? 1 : 2);
 		}
 	}
-	return false;
+	return { collision , false };
 }

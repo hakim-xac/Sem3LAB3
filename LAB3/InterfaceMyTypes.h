@@ -250,8 +250,10 @@ void LAB3::InterfaceMyTypes<TypeArray, TypeHashDirectBinding, TypeHashOpenAdress
 			for (auto it{ begin }, ite{ end }; it != ite; ++it)
 			{
 				std::string tmpString{ std::string(lengthColumn, ' ') };
+
 				std::string its{ std::to_string(std::distance(begin, it) + start ) };
 				tmpString.replace((tmpString.length() - its.length()) / 2, its.length(), its);
+				if (it != ite) tmpString.replace(0, 1, "|");
 				line += tmpString;
 			}
 			this->addToStatusBar(this->generatingStrings(textNumber, std::move(line)), false);
@@ -263,6 +265,7 @@ void LAB3::InterfaceMyTypes<TypeArray, TypeHashDirectBinding, TypeHashOpenAdress
 				std::string tmpString{ std::string(lengthColumn, ' ') };
 				std::string its{ std::to_string(*it) };
 				tmpString.replace((tmpString.length() - its.length()) / 2, its.length(), its);
+				if (it != ite) tmpString.replace(0, 1, "|");
 				line += tmpString;
 			}
 			this->addToStatusBar(this->generatingStrings(textItem, std::move(line)), false);
