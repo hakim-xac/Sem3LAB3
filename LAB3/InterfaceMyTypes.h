@@ -219,17 +219,13 @@ void LAB3::InterfaceMyTypes<TypeArray, TypeHashDirectBinding, TypeHashOpenAdress
 	if (!this->getFlagClearArrayAndHash()) {
 
 
+
 		this->addToStatusBar("Вывод Хеш таблицы");
-		if (typeOpen == TypeOpenAdressing::Line)
-		{
-			this->myTypeHashTableOpenAdressin.generateHashTableOpenAdressingLineType(this->myTypeArray.begin(), this->myTypeArray.end());
-			this->addToStatusBar(this->generatingStrings("метод создания", "метод открытой адресации (линейные пробы)"), false);
-		}
-		else
-		{
-			this->myTypeHashTableOpenAdressin.generateHashTableOpenAdressingQuadType(this->myTypeArray.begin(), this->myTypeArray.end());
-			this->addToStatusBar(this->generatingStrings("метод создания", "метод открытой адресации (квадратичные пробы)"), false);
-		}
+		this->myTypeHashTableOpenAdressing.generateHashTableOpenAdressing(this->myTypeArray.begin(), this->myTypeArray.end(), typeOpen);
+			
+		std::string activeType{ typeOpen == TypeOpenAdressing::Line ? "линейные" : "квадратичные"};
+		this->addToStatusBar(this->generatingStrings("метод создания", "метод открытой адресации ("+ activeType +" пробы)"), false);
+		
 
 		this->addToStatusBar(this->delimiter('-'), false);
 		this->addToStatusBar(this->delimiter(' '), false);
@@ -238,16 +234,16 @@ void LAB3::InterfaceMyTypes<TypeArray, TypeHashDirectBinding, TypeHashOpenAdress
 		std::string textItem	{ "Число:       " };
 
 		auto lengthColumn{ (this->getMaxTableWidth() - 10 - textNumber.size()) / this->getMaxTableColumns() };
-		int countLines{ static_cast<int>(std::ceil(static_cast<double>(this->myTypeHashTableOpenAdressin.getSize()) / this->getMaxTableColumns())) };
+		int countLines{ static_cast<int>(std::ceil(static_cast<double>(this->myTypeHashTableOpenAdressing.getSize()) / this->getMaxTableColumns())) };
 
 		this->addToStatusBar(this->delimiter(), false);
 		for (int i{}; i < countLines; ++i)
 		{
 			auto start{ this->getMaxTableColumns() * i  };
 			auto finish{ this->getMaxTableColumns() * (i + 1)  };
-			if (finish > this->myTypeHashTableOpenAdressin.getSize()) finish = this->myTypeHashTableOpenAdressin.getSize();
-			auto begin{ std::next(this->myTypeHashTableOpenAdressin.begin(), start) };
-			auto end{ std::next(this->myTypeHashTableOpenAdressin.begin(), finish) };
+			if (finish > this->myTypeHashTableOpenAdressing.getSize()) finish = this->myTypeHashTableOpenAdressing.getSize();
+			auto begin{ std::next(this->myTypeHashTableOpenAdressing.begin(), start) };
+			auto end{ std::next(this->myTypeHashTableOpenAdressing.begin(), finish) };
 
 
 			std::string line{};

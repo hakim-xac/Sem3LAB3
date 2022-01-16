@@ -3,6 +3,7 @@
 #include <list>
 #include <algorithm>
 #include <iostream>
+#include "enums.h"
 
 namespace LAB3 {
 
@@ -25,11 +26,9 @@ namespace LAB3 {
 
 		void resize(size_t newSize);
 		void clear();
-		template <class Iter>
-		bool generateHashTableOpenAdressingLineType(Iter begin, Iter end);
 
 		template <class Iter>
-		bool generateHashTableOpenAdressingQuadType(Iter begin, Iter end);
+		bool generateHashTableOpenAdressing(Iter begin, Iter end, TypeOpenAdressing typeOpen);
 	};
 }
 
@@ -105,7 +104,7 @@ void LAB3::MyHashOpenAdressing<Type>
 template <class Type>
 template <class Iter>
 bool LAB3::MyHashOpenAdressing<Type>
-::generateHashTableOpenAdressingLineType(Iter begin, Iter end)
+::generateHashTableOpenAdressing(Iter begin, Iter end, TypeOpenAdressing typeOpen)
 {
 	size_t size{ hash.size() };
 	hash.clear();
@@ -115,7 +114,7 @@ bool LAB3::MyHashOpenAdressing<Type>
 	auto hs{ *begin };
 	for (auto it{ begin }, ite{ end }; it != ite; ++it) {
 		hs = this->hashFunc(*it);
-		size_t d{ 1 };
+		Type d{ 1 };
 		for (;;)
 		{
 			if (hash.at(hs) == *it) break;
@@ -130,44 +129,8 @@ bool LAB3::MyHashOpenAdressing<Type>
 			}
 			++collision;
 			hs += d;
-			if (hs >= size) hs -= hash.size();
-			++d;
-		}
-	}
-	return false;
-}
-
-
-template <class Type>
-template <class Iter>
-bool LAB3::MyHashOpenAdressing<Type>
-::generateHashTableOpenAdressingQuadType(Iter begin, Iter end)
-{
-	size_t size{ hash.size() };
-	hash.clear();
-	hash.resize(size);
-	auto arrayLength{ std::distance(begin, end) };
-	size_t collision{};
-	auto hs{ *begin };
-	for (auto it{ begin }, ite{ end }; it != ite; ++it) {
-		hs = this->hashFunc(*it);
-		size_t d{ 1 };
-		for (;;)
-		{
-			if (hash.at(hs) == *it) break;
-			if (hash.at(hs) == 0)
-			{
-				hash[hs] = *it;
-				break;
-			}
-			if (d >= hash.size())
-			{
-				return true;
-			}
-			++collision;
-			hs += d;
-			if (hs >= size) hs -= hash.size();
-			d += 2;
+			if (hs >= size) hs -= static_cast<Type>(hash.size());
+			d += (typeOpen == TypeOpenAdressing::Line ? 1 : 2);
 		}
 	}
 	return false;

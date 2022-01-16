@@ -28,7 +28,7 @@ namespace LAB3 {
 
 		TypeArray myTypeArray;
 		TypeHashDirectBinding myTypeHashTableDirectBinding;
-		TypeHashOpenAdressing myTypeHashTableOpenAdressin;
+		TypeHashOpenAdressing myTypeHashTableOpenAdressing;
 
 		void addToStatusBar(const std::string& str, bool isFormated = true);
 		void addToStatusBar(const std::string&& str, bool isFormated = true);
@@ -86,11 +86,11 @@ LAB3::Interface<TypeArray, TypeHashDirectBinding, TypeHashOpenAdressing>
 ::Interface(
 	TypeArray& myTypeArray
 	, TypeHashDirectBinding& myTypeHashTableDirectBinding
-	, TypeHashOpenAdressing& myTypeHashTableOpenAdressin
+	, TypeHashOpenAdressing& myTypeHashTableOpenAdressing
 	)
 	: myTypeArray(myTypeArray)
 	, myTypeHashTableDirectBinding(myTypeHashTableDirectBinding)
-	, myTypeHashTableOpenAdressin(myTypeHashTableOpenAdressin) {}
+	, myTypeHashTableOpenAdressing(myTypeHashTableOpenAdressing) {}
 
 
 template <class TypeArray, class TypeHashDirectBinding, class TypeHashOpenAdressing>
@@ -98,11 +98,11 @@ LAB3::Interface<TypeArray, TypeHashDirectBinding, TypeHashOpenAdressing>
 ::Interface(
 	TypeArray&& myTypeArray
 	, TypeHashDirectBinding&& myTypeHashTableDirectBinding
-	, TypeHashOpenAdressing&& myTypeHashTableOpenAddressin
+	, TypeHashOpenAdressing&& myTypeHashTableOpenAddressing
 	)
 	: myTypeArray(myTypeArray)
 	, myTypeHashTableDirectBinding(myTypeHashTableDirectBinding)
-	, myTypeHashTableOpenAdressin(myTypeHashTableOpenAdressin) {}
+	, myTypeHashTableOpenAdressing(myTypeHashTableOpenAdressing) {}
 
 
 template <class TypeArray, class TypeHashDirectBinding, class TypeHashOpenAdressing>
