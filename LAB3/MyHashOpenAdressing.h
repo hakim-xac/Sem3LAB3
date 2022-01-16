@@ -27,6 +27,8 @@ namespace LAB3 {
 		void resize(size_t newSize);
 		void clear();
 
+		bool find(const Type& item, TypeOpenAdressing typeOpen);
+
 		template <class Iter>
 		std::pair<size_t, bool> generateHashTableOpenAdressing(Iter begin, Iter end, TypeOpenAdressing typeOpen);
 	};
@@ -100,6 +102,22 @@ void LAB3::MyHashOpenAdressing<Type>
 	hash.resize(size);
 }
 
+template<class Type>
+bool LAB3::MyHashOpenAdressing<Type>::find(const Type& item, TypeOpenAdressing typeOpen)
+{
+	auto hs{ this->hashFunc(item) };
+	Type d{ 1 };
+	for(;;)
+	{
+		if (hash.at(hs) == item) return true;
+		if (d >= hash.size()) return false;
+		hs += d;
+		if (hs >= hash.size()) hs -= hash.size();
+		d += (typeOpen == TypeOpenAdressing::Line ? 1 : 2);		
+	}
+
+}
+
 
 template <class Type>
 template <class Iter>
@@ -111,9 +129,8 @@ std::pair<size_t, bool> LAB3::MyHashOpenAdressing<Type>
 	hash.resize(size);
 	auto arrayLength{ std::distance(begin, end) };
 	size_t collision{};
-	auto hs{ *begin };
 	for (auto it{ begin }, ite{ end }; it != ite; ++it) {
-		hs = this->hashFunc(*it);
+		auto hs{ this->hashFunc(*it) };
 		Type d{ 1 };
 		for (;;)
 		{
@@ -129,7 +146,7 @@ std::pair<size_t, bool> LAB3::MyHashOpenAdressing<Type>
 			}
 			++collision;
 			hs += d;
-			if (hs >= size) hs -= static_cast<Type>(hash.size());
+			if (hs >= hash.size()) hs -= static_cast<Type>(hash.size());
 			d += (typeOpen == TypeOpenAdressing::Line ? 1 : 2);
 		}
 	}

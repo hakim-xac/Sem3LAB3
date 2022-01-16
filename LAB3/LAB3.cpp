@@ -15,7 +15,6 @@ int main()
     using namespace LAB3;                           // Подключаем пространство имен нашей программы
 
     setlocale(LC_ALL, "Russian");                   // Задаем локаль
-    Keys key{ Keys::Exit };                         // Задаем по умолчанию команду выхода
 
 
     InterfaceMyTypes<MyArray<int>, MyHashDirectBinding<int>, MyHashOpenAdressing<int>>

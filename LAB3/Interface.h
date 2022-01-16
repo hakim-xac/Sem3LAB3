@@ -10,19 +10,18 @@ namespace LAB3 {
 	template <class TypeArray, class TypeHashDirectBinding, class TypeHashOpenAdressing>
 	class Interface
 	{
-	/// <summary>
-	/// Базовый класс интерфейса
-	/// </summary>
-	/// <typeparam name="TypeElem">Тип "myType"</typeparam>
-	private:
 		std::ostream& out										{ std::cout };			// буфер вывода
 		size_t maxTableWidth									{ 110 };				// ширина выводимой строки
 		int maxTableColumnsInArray								{ 5 };					// количество колонов при выводе массива
 		std::queue <std::string> bufferForStatusBar				{};						// очередь для статус бара
 		Keys activeKey											{ Keys::EmptyKey };
+		std::vector <std::string> bufferForMenu{};
 
+
+	private:
 		Interface() = delete;															// запрещаем создавать пустой класс
 
+		void generateMenu();
 	protected:
 
 
@@ -90,7 +89,9 @@ LAB3::Interface<TypeArray, TypeHashDirectBinding, TypeHashOpenAdressing>
 	)
 	: myTypeArray(myTypeArray)
 	, myTypeHashTableDirectBinding(myTypeHashTableDirectBinding)
-	, myTypeHashTableOpenAdressing(myTypeHashTableOpenAdressing) {}
+	, myTypeHashTableOpenAdressing(myTypeHashTableOpenAdressing) {
+	generateMenu();
+}
 
 
 template <class TypeArray, class TypeHashDirectBinding, class TypeHashOpenAdressing>
@@ -102,7 +103,52 @@ LAB3::Interface<TypeArray, TypeHashDirectBinding, TypeHashOpenAdressing>
 	)
 	: myTypeArray(myTypeArray)
 	, myTypeHashTableDirectBinding(myTypeHashTableDirectBinding)
-	, myTypeHashTableOpenAdressing(myTypeHashTableOpenAdressing) {}
+	, myTypeHashTableOpenAdressing(myTypeHashTableOpenAdressing) {
+	generateMenu();
+}
+
+
+template <class TypeArray, class TypeHashDirectBinding, class TypeHashOpenAdressing>
+void LAB3::Interface<TypeArray, TypeHashDirectBinding, TypeHashOpenAdressing>
+::generateMenu()
+{
+	bufferForMenu.emplace_back(delimiter());
+	bufferForMenu.emplace_back(delimiter(' '));
+	bufferForMenu.emplace_back(generatingStrings("Нажмите на клавишу и нажмите ВВОД"));
+	bufferForMenu.emplace_back(delimiter('_'));
+
+	bufferForMenu.emplace_back(delimiter(' '));
+	bufferForMenu.emplace_back(generatingStrings("Вывод"));
+	bufferForMenu.emplace_back(generatingStrings("( 1 )", "Массива", '.'));
+	bufferForMenu.emplace_back(generatingStrings("( 2 )", "Хеш-таблицы (метод прямого связывания)", '.'));
+	bufferForMenu.emplace_back(generatingStrings("( 3 )", "хеш-таблицы (метод открытой адрессации, использованы линейные пробы)", '.'));
+	bufferForMenu.emplace_back(generatingStrings("( 4 )", "хеш-таблицы (метод открытой адрессации, использованы квадратичные пробы)", '.'));
+
+	bufferForMenu.emplace_back(delimiter(' '));
+	bufferForMenu.emplace_back(generatingStrings("Поиск в хеш-таблице"));
+
+	bufferForMenu.emplace_back(generatingStrings("( 5 )", "метод прямого связывания", '.'));
+	bufferForMenu.emplace_back(generatingStrings("( 6 )", "метод открытой адрессации, использованы линейные пробы", '.'));
+	bufferForMenu.emplace_back(generatingStrings("( 7 )", "метод открытой адрессации, использованы квадратичные пробы", '.'));
+
+	bufferForMenu.emplace_back(delimiter(' '));
+	bufferForMenu.emplace_back(generatingStrings("Прочее"));
+	bufferForMenu.emplace_back(generatingStrings("( 8 )", "Обновить массив и хеш-таблицы новыми данными", '.'));
+	bufferForMenu.emplace_back(generatingStrings("( 9 )", "Задать новый размер массива и хеш-таблиц", '.'));
+	bufferForMenu.emplace_back(generatingStrings("( 0 )", "Выход", '.'));
+	bufferForMenu.emplace_back(delimiter());
+}
+
+
+template <class TypeArray, class TypeHashDirectBinding, class TypeHashOpenAdressing>
+constexpr void LAB3::Interface<TypeArray, TypeHashDirectBinding, TypeHashOpenAdressing>
+::showMenu()
+{
+	for (auto&& it : bufferForMenu)
+	{
+		out << it;
+	}
+}
 
 
 template <class TypeArray, class TypeHashDirectBinding, class TypeHashOpenAdressing>
@@ -198,28 +244,6 @@ constexpr void LAB3::Interface<TypeArray, TypeHashDirectBinding, TypeHashOpenAdr
 	out << header;
 	out << delimiter('-');
 	out << header2;
-	out << hr;
-}
-
-
-template <class TypeArray, class TypeHashDirectBinding, class TypeHashOpenAdressing>
-constexpr void LAB3::Interface<TypeArray, TypeHashDirectBinding, TypeHashOpenAdressing>
-::showMenu()
-{
-	std::string hr{ delimiter() };
-
-	out << hr;
-	out << delimiter(' ');
-	out << generatingStrings("Нажмите на клавишу и нажмите ВВОД");
-	out << delimiter('_');
-	out << generatingStrings("( 1 )", "Распечатать массив на экран", '.');
-	out << generatingStrings("( 2 )", "Распечатать хеш-таблицу на экран (метод ПРЯМОГО СВЯЗЫВАНИЯ)", '.');
-	out << generatingStrings("( 3 )", "Распечатать хеш-таблицу на экран (метод ОТКРЫТОЙ АДРЕСАЦИИ, использованы линейные пробы)", '.');
-	out << generatingStrings("( 4 )", "Распечатать хеш-таблицу на экран (метод ОТКРЫТОЙ АДРЕСАЦИИ, использованы квадратичные пробы)", '.');
-	out << generatingStrings("( 5 )", "Поиск числа в хеш-таблице", '.');
-	out << generatingStrings("( 6 )", "Обновить массив и хеш-таблицы новыми данными", '.');
-	out << generatingStrings("( 7 )", "Задать новый размер массива и хеш-таблиц", '.');
-	out << generatingStrings("( 0 )", "Выход", '.');
 	out << hr;
 }
 

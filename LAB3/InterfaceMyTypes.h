@@ -18,7 +18,7 @@ namespace LAB3 {
 
 
 		template <class Iter>
-		void printHashTableOpenAdressing(Iter begin, Iter end, const std::string&& defaultString);				// TODO
+		void printHashTableOpenAdressing(Iter begin, Iter end, const std::string&& defaultString);
 		
 
 	public:
@@ -36,6 +36,7 @@ namespace LAB3 {
 		void showUpdateData(isVisibleClear visibleStatus = isVisibleClear::ON);
 		void showResizeData();
 		void searchNumber();
+		void searchNumberOpenAdressing(TypeOpenAdressing typeOpen);
 		void readKey();
 	};	
 }
@@ -218,13 +219,18 @@ void LAB3::InterfaceMyTypes<TypeArray, TypeHashDirectBinding, TypeHashOpenAdress
 {
 	if (!this->getFlagClearArrayAndHash()) {
 
+		size_t countCollision{};
+		bool isOverFlow{};
 
-
-		this->addToStatusBar("Вывод Хеш таблицы");
-		this->myTypeHashTableOpenAdressing.generateHashTableOpenAdressing(this->myTypeArray.begin(), this->myTypeArray.end(), typeOpen);
+		std::tie(countCollision, isOverFlow) = this->myTypeHashTableOpenAdressing.generateHashTableOpenAdressing(this->myTypeArray.begin(), this->myTypeArray.end(), typeOpen);
 			
+		this->addToStatusBar("Вывод Хеш таблицы");
 		std::string activeType{ typeOpen == TypeOpenAdressing::Line ? "линейные" : "квадратичные"};
 		this->addToStatusBar(this->generatingStrings("метод создания", "метод открытой адресации ("+ activeType +" пробы)"), false);
+		this->addToStatusBar(this->delimiter('-'), false);
+		this->addToStatusBar(this->generatingStrings("Количество коллизий:", std::to_string(countCollision)), false);
+		this->addToStatusBar(this->delimiter('-'), false);
+		this->addToStatusBar(this->generatingStrings("Было ли переполнение:", (isOverFlow ? "Да" : "Нет")), false);
 		
 
 		this->addToStatusBar(this->delimiter('-'), false);
@@ -339,7 +345,7 @@ void LAB3::InterfaceMyTypes<TypeArray, TypeHashDirectBinding, TypeHashOpenAdress
 ::searchNumber()
 {
 	std::cout << this->delimiter('-');
-	std::cout << this->generatingStrings("Введите число для поиска в Хеш-таблице:");
+	std::cout << this->generatingStrings("Введите число для поиска в Хеш-таблице (метод ПРЯМОГО СВЯЗЫВАНИЯ):");
 	std::cout << this->delimiter('-');
 	int tmp{};
 	std::cin >> tmp;
@@ -351,6 +357,30 @@ void LAB3::InterfaceMyTypes<TypeArray, TypeHashDirectBinding, TypeHashOpenAdress
 	}
 	std::string showIsFind{ "Число " + std::to_string(tmp) + " " };
 	showIsFind += (this->myTypeHashTableDirectBinding.find(tmp) ? " Найдено!" : " Не найдено!");
+	this->addToStatusBar(std::move(showIsFind));
+	std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+}
+
+
+template <class TypeArray, class TypeHashDirectBinding, class TypeHashOpenAdressing>
+void LAB3::InterfaceMyTypes<TypeArray, TypeHashDirectBinding, TypeHashOpenAdressing>
+::searchNumberOpenAdressing(TypeOpenAdressing typeOpen)
+{
+	this->myTypeHashTableOpenAdressing.generateHashTableOpenAdressing(this->myTypeArray.begin(), this->myTypeArray.end(), typeOpen);
+
+	std::cout << this->delimiter('-');
+	std::cout << this->generatingStrings("Введите число для поиска в Хеш-таблице (метод Открытой адрессации):");
+	std::cout << this->delimiter('-');
+	int tmp{};
+	std::cin >> tmp;
+	if (std::cin.fail()) {
+		std::cin.clear();
+		std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+		this->addToStatusBar("ОШИБКА ВВОДА ДАННЫХ!");
+		return;
+	}
+	std::string showIsFind{ "Число " + std::to_string(tmp) + " " };
+	showIsFind += (this->myTypeHashTableOpenAdressing.find(tmp, typeOpen) ? " Найдено!" : " Не найдено!");
 	this->addToStatusBar(std::move(showIsFind));
 	std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 }
@@ -379,16 +409,22 @@ void LAB3::InterfaceMyTypes<TypeArray, TypeHashDirectBinding, TypeHashOpenAdress
 	case Keys::PrintHashTableOpenAdressingLineType:     // 3
 		showPrintHashTableOpenAdressing(TypeOpenAdressing::Line);	// Вывод хеш-таблицы на экран (метод ОТКРЫТОЙ АДРЕСАЦИИ, Для разрешения коллизий использованы линейные пробы)
 		break;
-	case Keys::PrintHashTableOpenAdressingQuadType:     // 3
-		showPrintHashTableOpenAdressing(TypeOpenAdressing::Quad);	// Вывод хеш-таблицы на экран (метод ОТКРЫТОЙ АДРЕСАЦИИ, Для разрешения коллизий использованы линейные пробы)
+	case Keys::PrintHashTableOpenAdressingQuadType:     // 4
+		showPrintHashTableOpenAdressing(TypeOpenAdressing::Quad);	// Вывод хеш-таблицы на экран (метод ОТКРЫТОЙ АДРЕСАЦИИ, Для разрешения коллизий использованы квадратичные пробы)
 		break;
-	case Keys::SearchNumber:                     // 4
-		searchNumber();		                     // Поиск числа в Хеш
+	case Keys::SearchNumber:                     // 5
+		searchNumber();		                     // Поиск числа в хеш-таблице (метод ПРЯМОГО СВЯЗЫВАНИЯ)
 		break;
-	case Keys::UpdateArrayAndHashTable:                 // 5
+	case Keys::SearchNumberLine:                 // 6
+		searchNumberOpenAdressing(TypeOpenAdressing::Line);			// Поиск числа в хеш-таблице (метод ОТКРЫТОЙ АДРЕСАЦИИ, использованы линейные пробы)
+		break;
+	case Keys::SearchNumberQuad:                 // 7
+		searchNumberOpenAdressing(TypeOpenAdressing::Quad);		    // Поиск числа в хеш-таблице (метод ОТКРЫТОЙ АДРЕСАЦИИ, использованы квадратичные пробы)
+		break;
+	case Keys::UpdateArrayAndHashTable:          // 8
 		showUpdateData(isVisibleClear::OFF);     // Обновляем массив и хеш-таблицу новыми данными
 		break;
-	case Keys::ResizeArray:                      // 6
+	case Keys::ResizeArray:                      // 9
 		showResizeData();                        // Изменяем размер массива и очищаем его, генерируем новые данные массива и хеш-таблицу
 		break;
 	default:
