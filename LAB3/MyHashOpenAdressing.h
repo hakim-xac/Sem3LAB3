@@ -112,7 +112,7 @@ bool LAB3::MyHashOpenAdressing<Type>::find(const Type& item, TypeOpenAdressing t
 		if (hash.at(hs) == item) return true;
 		if (d >= hash.size()) return false;
 		hs += d;
-		if (hs >= hash.size()) hs -= hash.size();
+		if (hs >= hash.size()) hs -= static_cast<Type>(hash.size());
 		d += (typeOpen == TypeOpenAdressing::Line ? 1 : 2);		
 	}
 

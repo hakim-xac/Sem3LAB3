@@ -14,13 +14,14 @@ namespace LAB3 {
 		, EmptyKey = -1
 	};
 
-	enum class isVisibleClear {
+	enum class isVisibleClearForDirectBinding {			// Выбор правильного меню при использовании очистки методом прямого связывания
 		ON
 		, OFF
 	};
 
-	enum class TypeOpenAdressing {
-		Line, Quad
+	enum class TypeOpenAdressing {						// Выбор типа при подсчете и сравнении количества коллизии в методе открытой адрессации
+		Line											// Line - при линейных пробах
+		, Quad											// Quad - при квадратичных пробах
 	};
 
 }

@@ -1,6 +1,7 @@
 #pragma once
 #include "Interface.h"
 #include <limits>
+#include <tuple>
 
 
 
@@ -27,13 +28,13 @@ namespace LAB3 {
 						, TypeHashOpenAdressing myTypeHashTableOpenAddressin
 		);
 
-		void showGeneratedRandom(isVisibleClear visibleStatus = isVisibleClear::ON);
+		void showGeneratedRandom(isVisibleClearForDirectBinding visibleStatus = isVisibleClearForDirectBinding::ON);
 		void showPrintArray();
 
 		void showPrintHashTableDirectBinding();
 		void showPrintHashTableOpenAdressing(TypeOpenAdressing typeOpen);
 
-		void showUpdateData(isVisibleClear visibleStatus = isVisibleClear::ON);
+		void showUpdateData(isVisibleClearForDirectBinding visibleStatus = isVisibleClearForDirectBinding::ON);
 		void showResizeData();
 		void searchNumber();
 		void searchNumberOpenAdressing(TypeOpenAdressing typeOpen);
@@ -150,7 +151,7 @@ LAB3::InterfaceMyTypes<TypeArray, TypeHashDirectBinding, TypeHashOpenAdressing>
 
 template <class TypeArray, class TypeHashDirectBinding, class TypeHashOpenAdressing>
 void LAB3::InterfaceMyTypes<TypeArray, TypeHashDirectBinding, TypeHashOpenAdressing>
-::showGeneratedRandom(isVisibleClear visibleStatus)
+::showGeneratedRandom(isVisibleClearForDirectBinding visibleStatus)
 {
 
 	/// <summary>
@@ -160,7 +161,7 @@ void LAB3::InterfaceMyTypes<TypeArray, TypeHashDirectBinding, TypeHashOpenAdress
 	this->myTypeHashTableDirectBinding.generateHashTableDirectBinding(this->myTypeArray.begin(), this->myTypeArray.end());
 
 	this->setFlagClearArray(false);
-	if (visibleStatus == isVisibleClear::ON)
+	if (visibleStatus == isVisibleClearForDirectBinding::ON)
 	{
 		this->addToStatusBar("Данные успешно сгенерированны случайными числами!");
 	}
@@ -219,10 +220,8 @@ void LAB3::InterfaceMyTypes<TypeArray, TypeHashDirectBinding, TypeHashOpenAdress
 {
 	if (!this->getFlagClearArrayAndHash()) {
 
-		size_t countCollision{};
-		bool isOverFlow{};
 
-		std::tie(countCollision, isOverFlow) = this->myTypeHashTableOpenAdressing.generateHashTableOpenAdressing(this->myTypeArray.begin(), this->myTypeArray.end(), typeOpen);
+		auto [countCollision, isOverFlow] = this->myTypeHashTableOpenAdressing.generateHashTableOpenAdressing(this->myTypeArray.begin(), this->myTypeArray.end(), typeOpen);
 			
 		this->addToStatusBar("Вывод Хеш таблицы");
 		std::string activeType{ typeOpen == TypeOpenAdressing::Line ? "линейные" : "квадратичные"};
@@ -289,14 +288,14 @@ void LAB3::InterfaceMyTypes<TypeArray, TypeHashDirectBinding, TypeHashOpenAdress
 
 template <class TypeArray, class TypeHashDirectBinding, class TypeHashOpenAdressing>
 void LAB3::InterfaceMyTypes<TypeArray, TypeHashDirectBinding, TypeHashOpenAdressing>
-::showUpdateData(isVisibleClear visibleStatus)
+::showUpdateData(isVisibleClearForDirectBinding visibleStatus)
 {
 	if (!this->getFlagClearArrayAndHash()) {
 
 		this->myTypeArray.clear();
 		this->myTypeHashTableDirectBinding.clear();
 		this->setFlagClearArray(!this->getFlagClearArrayAndHash());
-		if (visibleStatus == isVisibleClear::ON) this->addToStatusBar("Данные успешно очищены!");
+		if (visibleStatus == isVisibleClearForDirectBinding::ON) this->addToStatusBar("Данные успешно очищены!");
 	}
 	else {
 		this->addToStatusBar("Для того чтобы очистить, нужно сначала заполнить!");
@@ -422,7 +421,7 @@ void LAB3::InterfaceMyTypes<TypeArray, TypeHashDirectBinding, TypeHashOpenAdress
 		searchNumberOpenAdressing(TypeOpenAdressing::Quad);		    // Поиск числа в хеш-таблице (метод ОТКРЫТОЙ АДРЕСАЦИИ, использованы квадратичные пробы)
 		break;
 	case Keys::UpdateArrayAndHashTable:          // 8
-		showUpdateData(isVisibleClear::OFF);     // Обновляем массив и хеш-таблицу новыми данными
+		showUpdateData(isVisibleClearForDirectBinding::OFF);     // Обновляем массив и хеш-таблицу новыми данными
 		break;
 	case Keys::ResizeArray:                      // 9
 		showResizeData();                        // Изменяем размер массива и очищаем его, генерируем новые данные массива и хеш-таблицу

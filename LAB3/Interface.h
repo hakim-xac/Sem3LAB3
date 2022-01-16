@@ -1,7 +1,6 @@
 #pragma once
 #include <string>
 #include <queue>
-#include <map>
 #include <iostream>
 #include "enums.h"
 
@@ -14,14 +13,14 @@ namespace LAB3 {
 		size_t maxTableWidth									{ 110 };				// ширина выводимой строки
 		int maxTableColumnsInArray								{ 5 };					// количество колонов при выводе массива
 		std::queue <std::string> bufferForStatusBar				{};						// очередь для статус бара
-		Keys activeKey											{ Keys::EmptyKey };
-		std::vector <std::string> bufferForMenu{};
+		Keys activeKey											{ Keys::EmptyKey };		// 
+		std::vector <std::string> bufferForMenu{};										// буфер меню
 
 
 	private:
 		Interface() = delete;															// запрещаем создавать пустой класс
 
-		void generateMenu();
+		void generateMenu();															// генеригует меню
 	protected:
 
 
@@ -29,14 +28,14 @@ namespace LAB3 {
 		TypeHashDirectBinding myTypeHashTableDirectBinding;
 		TypeHashOpenAdressing myTypeHashTableOpenAdressing;
 
-		void addToStatusBar(const std::string& str, bool isFormated = true);
+		void addToStatusBar(const std::string& str, bool isFormated = true);			// добавляет в очередь статус бара, строку для вывода
 		void addToStatusBar(const std::string&& str, bool isFormated = true);
 
-		bool flagClearArrayAndHash								{ true };
+		bool flagClearArrayAndHash								{ true };				// флаг пустого массива и, следовательно, хеш-таблиц
 
 
 	public:
-
+		
 		Interface(TypeArray& myTypeArray
 			, TypeHashDirectBinding& myTypeHashTableDirectBinding
 			, TypeHashOpenAdressing& myTypeHashTableOpenAddressin
@@ -48,24 +47,31 @@ namespace LAB3 {
 			, TypeHashOpenAdressing&& myTypeHashTableOpenAddressin
 		);
 
-		constexpr size_t getMaxTableWidth()			const;
-		constexpr size_t getMaxTableColumns()		const;
-		constexpr bool getFlagClearArrayAndHash()	const;
-		Keys getActiveKey()							const;
-		void setActiveKey(Keys key);
+		constexpr size_t getMaxTableWidth()			const;					// возврат ширины максимальной длины используемой строки в приложении
+		constexpr size_t getMaxTableColumns()		const;					// возврат количества колонок "таблицы", при выводе данных массива и хеш-таблиц
+		constexpr bool getFlagClearArrayAndHash()	const;					// флаг пустого массива и хеш-таблиц
+		Keys getActiveKey()							const;					// возврат текущего кода клавиши
+		void setActiveKey(Keys key);										// задает код клавиши
 
-		void setFlagClearArray(bool flag);
+		void setFlagClearArray(bool flag);									// задает флаг, сигнализирующий очистку
 
-		constexpr void showHeader();
-		constexpr void showMenu();
-		void showStatusBar();
-		void showStatusType();
+		constexpr void showHeader();										// выводит заголовок
+		constexpr void showMenu();											// выводит меню
+		void showStatusBar();												// выводит информацию из статцс бара
+		void showStatusType();												// выводит информацию о массиве и хеш-таблице
 
-		constexpr  std::string delimiter(char del = '=') const;
+		constexpr  std::string delimiter(char del = '=') const;				// выводит разделитель
 
+
+		///
+		/// генерирует строку согласно формату программы с 1 параметром
+		///
 		constexpr const std::string generatingStrings(const std::string& str, char del = ' ') const;
 		constexpr const std::string generatingStrings(const std::string&& str, char del = ' ') const;
 
+		///
+		/// генерирует строку согласно формату программы с 2 параметрами
+		///
 		constexpr const std::string generatingStrings(const std::string& str, const std::string& str2, char del = ' ') const;
 		constexpr const std::string generatingStrings(const std::string&& str, const std::string&& str2, char del = ' ') const;
 
@@ -210,13 +216,7 @@ void LAB3::Interface<TypeArray, TypeHashDirectBinding, TypeHashOpenAdressing>
 template <class TypeArray, class TypeHashDirectBinding, class TypeHashOpenAdressing>
 void LAB3::Interface<TypeArray, TypeHashDirectBinding, TypeHashOpenAdressing>
 ::addToStatusBar(const std::string&& str, bool isFormated)
-{
-	/// <summary>
-	/// принимает rvalue строку и отправляет её в очередь статус бара
-	/// </summary>
-	/// 
-	/// <param name="isFormated">Форматировать строки по умолчанию?</param>
-	/// 
+{	
 	if (!isFormated) {
 		bufferForStatusBar.emplace(str);
 		return;
@@ -303,11 +303,6 @@ template <class TypeArray, class TypeHashDirectBinding, class TypeHashOpenAdress
 constexpr const std::string LAB3::Interface<TypeArray, TypeHashDirectBinding, TypeHashOpenAdressing>
 ::generatingStrings(const std::string&& str, char del) const
 {
-	/// <summary>
-	/// генерирует форматируемую строку с текстом str по центру
-	/// принимает rvalue строку
-	/// </summary>
-	/// <param name="del">заполняем "пустоты" этим символом</param>
 	try {
 		if (str.empty()) throw std::exception("Dont empty string! -> LAB2::MyList::generatingStrings(const std::string& str)");
 		int parity{ str.length() % 2 == 0 };
