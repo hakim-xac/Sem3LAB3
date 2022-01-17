@@ -26,7 +26,7 @@ int main()
     {
         if (window.getFlagClearArrayAndHash()) window.showGeneratedRandom();
 
-        system("cls");
+        system("cls");                      // Очистка экрана
         window.showHeader();                // Вывод заголовка
         window.showStatusType();            // Вывод служебной информации
         window.showStatusBar();             // Вывод "всплывающих сообщений"

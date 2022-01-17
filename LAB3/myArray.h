@@ -4,7 +4,10 @@
 #include <algorithm>
 
 namespace LAB3 {
-
+	/// <summary>
+	/// ћассив, используетс€ в качестве хранени€ чисел
+	/// </summary>
+	/// <typeparam name="Type">“ип хранимых в себе объектов</typeparam>
 	template<class Type>
 	class MyArray
 	{
@@ -17,16 +20,16 @@ namespace LAB3 {
 		/*
 		* «адаем итераторы
 		*/
-		auto begin();
-		auto end();
+		auto begin();					// итератор, указывающий на первый элемент
+		auto end();						// итератор, указывающий на следующий после крайнего элемента
 
 
-		size_t getSize();
+		size_t getSize();				// возврат размера массива
 
 
-		void clear();
-		void resize(size_t newSize);
-		void createRandom();
+		void clear();					// очищает массив
+		void resize(size_t newSize);	// измен€ет размер массива
+		void createRandom();			// генерирует случайные значени€ [1, std::numeric_limits<Type>::max())
 	};
 }
 

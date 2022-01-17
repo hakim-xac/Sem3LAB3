@@ -6,6 +6,10 @@
 
 namespace LAB3 {
 
+	/// <summary>
+	/// Массив, использующийся в качестве хеш-таблицы
+	/// Метод сохранения данных: метод прямого связывания.
+	/// </summary>
 	template <class Type>
 	class MyHashDirectBinding
 	{
@@ -17,17 +21,17 @@ namespace LAB3 {
 	public:
 		MyHashDirectBinding(size_t size);
 
-		auto begin();
-		auto end();
+		auto begin();												// итератор, указывающий на первый элемент
+		auto end();													// итератор, указывающий на следующий после крайнего элемента
 
-		size_t getSize();
+		size_t getSize();											// возвращает размер массива
 
-		void resize(size_t newSize);
-		void clear();
-		bool find(Type n);
+		void resize(size_t newSize);								// обновляет размер массив
+		void clear();												// очищает массив
+		bool find(Type n);											// метод поиска элемента в массиве. true - если нашел
 
 		template <class Iter>
-		void generateHashTableDirectBinding(Iter begin, Iter end);
+		void generateHashTableDirectBinding(Iter begin, Iter end);	// генерирует хеш-таблицу из данных массива, на который указывают итераторы
 
 	};
 }

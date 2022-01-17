@@ -6,7 +6,10 @@
 #include "enums.h"
 
 namespace LAB3 {
-
+	/// <summary>
+	/// Массив, использующийся в качестве хеш-таблицы
+	/// Метод сохранения данных: метод открытой адрессации.
+	/// </summary>
 	template <class Type>
 	class MyHashOpenAdressing
 	{
@@ -14,21 +17,24 @@ namespace LAB3 {
 		MyHashOpenAdressing() = delete;
 	private:
 
-		Type hashFunc(Type value);
+		Type hashFunc(Type value);									// расчет хеша по значению
 
 	public:
 		MyHashOpenAdressing(size_t size);
+				
+		auto begin();												// итератор, указывающий на первый элемент
+		auto end();													// итератор, указывающий на следующий после крайнего элемента
 
-		auto begin();
-		auto end();
+		size_t getSize();											// возвращает размер массива
 
-		size_t getSize();
+		void resize(size_t newSize);								// обновляет размер массив
+		void clear();												// очищает массив
 
-		void resize(size_t newSize);
-		void clear();
+		bool find(const Type& item, TypeOpenAdressing typeOpen);	// метод поиска элемента в массиве. true - если нашел
 
-		bool find(const Type& item, TypeOpenAdressing typeOpen);
-
+		/// <summary>
+		/// генерирует хеш-таблицу из данных массива, на который указывают итераторы
+		/// </summary>
 		template <class Iter>
 		std::pair<size_t, bool> generateHashTableOpenAdressing(Iter begin, Iter end, TypeOpenAdressing typeOpen);
 	};

@@ -5,7 +5,14 @@
 #include "enums.h"
 
 namespace LAB3 {
-
+	/// <summary>
+	/// ќбобщеный интерфейс
+	/// </summary>
+	/// <typeparam name="TypeArray">“ип массива, используемого дл€ хранени€ случайных чисел</typeparam>
+	/// <typeparam name="TypeHashDirectBinding">“ип массива, используемого дл€ хранени€ чисел в качестве
+	///  хеш-таблицы использу€ мктод пр€мого св€зывани€</typeparam>
+	/// <typeparam name="TypeHashOpenAdressing">“ип массива, используемого дл€ хранени€ чисел в качестве
+	///  хеш-таблицы использу€ метод открытой адрессации</typeparam>
 	template <class TypeArray, class TypeHashDirectBinding, class TypeHashOpenAdressing>
 	class Interface
 	{
@@ -83,7 +90,7 @@ namespace LAB3 {
 /***************************************************************************************************************************/
 /***************************************************************************************************************************/
 /***************************************************************************************************************************/
-
+												/* ќпределение методов */
 
 
 template <class TypeArray, class TypeHashDirectBinding, class TypeHashOpenAdressing>

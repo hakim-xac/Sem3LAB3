@@ -6,18 +6,38 @@
 
 
 namespace LAB3 {
+
+	/// <summary>
+	/// Интерфейс заточеный под класс массива TypeArray
+	/// </summary>
+	/// <typeparam name="TypeArray">Тип массива, используемого для хранения случайных чисел</typeparam>
+	/// <typeparam name="TypeHashDirectBinding">Тип массива, используемого для хранения чисел в качестве
+	///  хеш-таблицы используя мктод прямого связывания</typeparam>
+	/// <typeparam name="TypeHashOpenAdressing">Тип массива, используемого для хранения чисел в качестве
+	///  хеш-таблицы используя метод открытой адрессации</typeparam>
 	template <class TypeArray, class TypeHashDirectBinding, class TypeHashOpenAdressing>
 	class InterfaceMyTypes : public Interface<TypeArray, TypeHashDirectBinding, TypeHashOpenAdressing>
 	{
 	private:
 
+
+		/// <summary>
+		/// Вывод массива на вывод указанный в базовом классе: "out"
+		/// </summary>
 		template <class Iter>
 		void printArray(Iter begin, Iter end, const std::string&& defaultString);
 
+
+		/// <summary>
+		/// Вывод хеш-таблицы на вывод указанный в базовом классе: "out"
+		/// </summary>
 		template <class Iter>
 		void printHashTableDirectBinding(Iter begin, Iter end, const std::string&& defaultString);
 
 
+		/// <summary>
+		/// Вывод хеш-таблицы на вывод указанный в базовом классе: "out"
+		/// </summary>
 		template <class Iter>
 		void printHashTableOpenAdressing(Iter begin, Iter end, const std::string&& defaultString);
 		
@@ -28,16 +48,50 @@ namespace LAB3 {
 						, TypeHashOpenAdressing myTypeHashTableOpenAddressin
 		);
 
+
+		/// <summary>
+		/// Вывод информации о статусе генерации
+		/// </summary>
 		void showGeneratedRandom(isVisibleClearForDirectBinding visibleStatus = isVisibleClearForDirectBinding::ON);
+
+		/// <summary>
+		/// метод вывода массива
+		/// </summary>
 		void showPrintArray();
 
-		void showPrintHashTableDirectBinding();
+		/// <summary>
+		/// метод вывода хеш-таблицы
+		/// </summary>
+		void showPrintHashTableDirectBinding();	
+
+		/// <summary>
+		/// метод вывода хеш-таблицы
+		/// </summary>
 		void showPrintHashTableOpenAdressing(TypeOpenAdressing typeOpen);
 
+		/// <summary>
+		/// вывод информации об обновлении данных
+		/// </summary>
 		void showUpdateData(isVisibleClearForDirectBinding visibleStatus = isVisibleClearForDirectBinding::ON);
+
+		/// <summary>
+		/// вывод информации об изменении данных
+		/// </summary>
 		void showResizeData();
+
+		/// <summary>
+		/// вывод информации о поиске в данных (метод прямого связывания)
+		/// </summary>
 		void searchNumber();
+
+		/// <summary>
+		/// вывод информации о поиске в данных (метод открытой адресации)
+		/// </summary>
 		void searchNumberOpenAdressing(TypeOpenAdressing typeOpen);
+
+		/// <summary>
+		/// считывания кода символа и его обработка
+		/// </summary>
 		void readKey();
 	};	
 }
@@ -51,6 +105,7 @@ namespace LAB3 {
 /*******************************************************************************************************************************/
 /*******************************************************************************************************************************/
 /*******************************************************************************************************************************/
+												/* Определение методов */
 
 
 
@@ -318,6 +373,7 @@ void LAB3::InterfaceMyTypes<TypeArray, TypeHashDirectBinding, TypeHashOpenAdress
 		return;
 	}
 	this->myTypeHashTableDirectBinding.resize(newHashSize);
+	this->myTypeHashTableOpenAdressing.resize(newHashSize);
 
 	std::cout << this->delimiter('-');
 	std::cout << this->generatingStrings("Введите новый размер массива:");
